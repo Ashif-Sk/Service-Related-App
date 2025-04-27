@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1024929359159",
+    "project_id": "contrador-6599a",
+    "storage_bucket": "contrador-6599a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024929359159:android:4b33496d5812a7704a66b2",
+        "android_client_info": {
+          "package_name": "com.example.contrador"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1024929359159-79iimhjak206jp8c3l0d0m8cpqpqqcgp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5UVqGV1jU18x3YJEPVVWEY74dUVo2zck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1024929359159-79iimhjak206jp8c3l0d0m8cpqpqqcgp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1024929359159-groo1ncg2564d94hkstbjkdjt9cqun1i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.contrador"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
