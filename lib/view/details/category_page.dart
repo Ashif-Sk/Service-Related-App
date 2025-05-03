@@ -55,9 +55,10 @@ class _CategoryPageState extends State<CategoryPage> {
                       padding: const EdgeInsets.only(right: 12),
                       child: InkWell(
                         onTap: () {
-                          categoryName =
-                              widget.subCategoryList[index].toLowerCase();
-                          setState(() {});
+                          setState(() {
+                            categoryName =
+                                widget.subCategoryList[index].toLowerCase();
+                          });
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -76,7 +77,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                 fontWeight: FontWeight.w500,
                                 fontSize: 30.rt,
                                 color: categoryName ==
-                                        widget.subCategoryList[index].toLowerCase()
+                                        widget.subCategoryList[index]
+                                            .toLowerCase()
                                     ? Theme.of(context).colorScheme.tertiary
                                     : Theme.of(context).colorScheme.secondary,
                               ),
@@ -88,9 +90,9 @@ class _CategoryPageState extends State<CategoryPage> {
                   }),
             ),
             10.verticalSpace,
-            FutureBuilder(
+            FutureBuilder<List<ContractorModel>?>(
                 future: _contractorServices
-                    .getAllServicesBySubcategoryId(categoryName),
+                    .getAllServicesBySubcategoryId(categoryName.toLowerCase()),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
@@ -106,6 +108,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     );
                   } else {
                     List<ContractorModel>? contractorList = snapshot.data;
+                    print(contractorList!.length);
                     return GridView.builder(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         shrinkWrap: true,
@@ -116,12 +119,16 @@ class _CategoryPageState extends State<CategoryPage> {
                                 crossAxisSpacing: 10,
                                 mainAxisSpacing: 10,
                                 crossAxisCount: 2),
-                        itemCount: contractorList!.length,
+                        itemCount: contractorList.length,
                         itemBuilder: (context, index) {
                           ContractorModel contractor = contractorList[index];
+                          print(contractor.name);
                           return InkWell(
                             onTap: () {
-                              Flexify.go( ServiceDetailsPage(contractor: contractor,),
+                              Flexify.go(
+                                  ServiceDetailsPage(
+                                    contractor: contractor,
+                                  ),
                                   animation: FlexifyRouteAnimations.slide,
                                   animationDuration:
                                       const Duration(milliseconds: 500));
@@ -146,7 +153,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                             height: height * 0.13,
                                             width: double.maxFinite,
                                             child: Image.network(
-                                              contractor.imagePaths[0],
+                                              contractor.imagePaths.isEmpty
+                                                  ? "https://ts1.mm.bing.net/th?id=OIP.KzEs3voHZ9dcIWLNz46WTgHaEU&pid=15.1"
+                                                  : contractor.imagePaths[0],
                                               fit: BoxFit.contain,
                                             ),
                                           ),

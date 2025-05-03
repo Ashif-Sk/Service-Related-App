@@ -30,7 +30,7 @@ class _JobPublishPageState extends State<JobPublishPage> {
   final UiComponents _uiComponents = UiComponents();
   final ContractorServices _contractorServices = ContractorServices();
   final UserServices _userServices = UserServices();
-  late UserModel? _userModel;
+  // late UserModel? _userModel;
   final Random _random = Random();
   final String _userID = FirebaseAuth.instance.currentUser!.uid;
   TextEditingController nameController = TextEditingController();
@@ -121,10 +121,10 @@ class _JobPublishPageState extends State<JobPublishPage> {
     _list = widget.subCategoryList;
     _subcategoryValue = _list[0];
     _addressController.text = 'Get current location';
-    _userModel =  _userServices.getUserDetails(_userID) as UserModel?;
-    _profileImage = _userModel!.imagePath;
-    nameController.text = _userModel!.name;
-    phoneNumberController.text = _userModel!.phone;
+    // _userModel =  _userServices.getUserDetails(_userID) as UserModel?;
+    // _profileImage = _userModel!.imagePath;
+    // nameController.text = _userModel!.name;
+    // phoneNumberController.text = _userModel!.phone;
     super.initState();
   }
 
