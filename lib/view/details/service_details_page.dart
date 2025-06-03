@@ -1,7 +1,7 @@
 import 'package:contrador/components/ui_components.dart';
 import 'package:contrador/services/chat_services.dart';
-import 'package:contrador/view/bottom_nav_bar.dart';
 import 'package:contrador/view/details/contractor_profile_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,7 +32,8 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.tertiary,
-        title: _uiComponents.headline2('Subcategory'),
+        title: _uiComponents
+            .headline2(widget.contractor.subcategory.toUpperCase()),
       ),
       body: Column(
         children: [
@@ -52,10 +53,16 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                             backgroundColor: Colors.grey.withOpacity(0.35),
                             itemExtent: 400,
                             shrinkExtent: 200,
-                            children:
-                                widget.contractor.imagePaths.map((images) {
-                              return Image.network(images);
-                            }).toList()),
+                            children: [
+                              Image.network(
+                                "https://strapi.dhiwise.com/uploads/Firebase_Node_JS_OG_Image_f6223f11a9.png",
+                                fit: BoxFit.cover,
+                              )
+                            ]
+                            //     widget.contractor.imagePaths.map((images) {
+                            //   return Image.network(images);
+                            // }).toList(),
+                            ),
                       ),
                     ),
                     Positioned(
@@ -184,7 +191,11 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                       width: width * 0.14,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage(widget.contractor.profileImage),
+                              image: widget.contractor.profileImage == ''
+                                  ? const NetworkImage(
+                                      "https://th.bing.com/th/id/OIP.voWdvTJvgTx7MS9hmo8sQAHaHa?pid=ImgDet&w=202&h=202&c=7&dpr=1.3")
+                                  : NetworkImage(
+                                      widget.contractor.profileImage),
                               fit: BoxFit.cover),
                           shape: BoxShape.circle,
                           color: Colors.grey.withOpacity(0.35)),
@@ -319,8 +330,8 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                     height: height * 0.06,
                     width: width * 0.4,
                     buttonText: 'Chat',
-                    onPressed: () {
-                      Flexify.go(const BottomNavBar(initialPage: 1));
+                    onPressed: () async {
+                      _chatServices.startNewChat(widget.contractor.contractorId);
                     },
                     icon: Icons.chat_bubble_outline),
                 30.horizontalSpace,

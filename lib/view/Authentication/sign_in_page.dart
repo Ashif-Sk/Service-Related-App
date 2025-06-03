@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:contrador/models/user_model.dart';
+import 'package:contrador/services/user_services.dart';
 import 'package:contrador/view/Authentication/forgot_pass_page.dart';
 import 'package:contrador/view/Authentication/log_in_page.dart';
 import 'package:contrador/view/bottom_nav_bar.dart';
@@ -24,7 +26,8 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController confirmpasswordcontroller = TextEditingController();
   final GoogleServices _googleServices = GoogleServices();
   final UiComponents _uiComponents = UiComponents();
-  String? userId;
+  final UserServices _userServices = UserServices();
+  String userId = '';
 
   final _formKey = GlobalKey<FormState>();
 
@@ -36,24 +39,31 @@ class _SignUpPageState extends State<SignUpPage> {
         password: password,
       );
       userId = userCredential.user!.uid;
-      addUserDetails(emailcontroller.text.trim(), namecontroller.text.trim());
+      _userServices.addUserDetails(UserModel(
+          userId: userId,
+          name: namecontroller.text.trim(),
+          phone: '',
+          email: emailcontroller.text.trim(),
+          imagePath: '',
+          address: '',
+          latitude: 0.0,
+          longitude: 0.0,
+          gender: ''), userId);
     } on FirebaseAuthException catch (e) {
       _uiComponents.errorDialog(e.message.toString(), context);
     }
 
-    if (userId != null) {
-      Flexify.goRemoveAll(
-          const BottomNavBar(initialPage: 0,),
-        animation: FlexifyRouteAnimations.slide,
-        duration: const Duration(milliseconds: 500)
-      );
+    Flexify.goRemoveAll(
+        const BottomNavBar(initialPage: 0,),
+      animation: FlexifyRouteAnimations.slide,
+      duration: const Duration(milliseconds: 500)
+    );
     }
-  }
 
-  Future addUserDetails(String email, String name) async {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-    await users.doc(userId).set({'email': email, 'name': name, 'uid': userId});
-  }
+  // Future addUserDetails(String email, String name) async {
+  //   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  //   await users.doc(userId).set({'email': email, 'name': name, 'uid': userId});
+  // }
 
   @override
   void dispose() {

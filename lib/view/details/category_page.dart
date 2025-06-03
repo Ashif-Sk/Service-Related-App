@@ -122,7 +122,6 @@ class _CategoryPageState extends State<CategoryPage> {
                         itemCount: contractorList.length,
                         itemBuilder: (context, index) {
                           ContractorModel contractor = contractorList[index];
-                          print(contractor.name);
                           return InkWell(
                             onTap: () {
                               Flexify.go(
@@ -154,7 +153,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                             width: double.maxFinite,
                                             child: Image.network(
                                               contractor.imagePaths.isEmpty
-                                                  ? "https://ts1.mm.bing.net/th?id=OIP.KzEs3voHZ9dcIWLNz46WTgHaEU&pid=15.1"
+                                                  ? "https://strapi.dhiwise.com/uploads/Firebase_Node_JS_OG_Image_f6223f11a9.png"
                                                   : contractor.imagePaths[0],
                                               fit: BoxFit.contain,
                                             ),

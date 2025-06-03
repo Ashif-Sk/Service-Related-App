@@ -10,12 +10,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ChatPage extends StatefulWidget {
+  final String receiverId;
   final String chatRoomId;
-  final String receiverName;
-  final String contractorId;
 
   const ChatPage(
-      {super.key, required this.chatRoomId, required this.receiverName,required this.contractorId});
+      {super.key,required this.receiverId,required this.chatRoomId});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -26,7 +25,23 @@ class _ChatPageState extends State<ChatPage> {
   final ChatServices _chatServices = ChatServices();
   final TextEditingController _messageController = TextEditingController();
   int? _selectedIndex;
-  final String _userId = FirebaseAuth.instance.currentUser!.uid;
+  String chatRoomId = '';
+  String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+  String receiverName = '';
+  String receiverProfile = '';
+
+
+  void loadReceiverInfo() async {
+    var doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.receiverId)
+        .get();
+
+    setState(() {
+      receiverName = doc['name'] ?? 'User';
+      receiverProfile = doc['profilePic'] ?? '';
+    });
+  }
 
   void toggleDeleteIcon(int? index) {
     setState(() {
@@ -42,7 +57,7 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.tertiary,
-        title: _uiComponents.headline2(widget.receiverName),
+        title: _uiComponents.headline2(receiverName),
         actions: [
           PopupMenuButton<int>(
             color: Theme.of(context).colorScheme.tertiary,
@@ -56,7 +71,7 @@ class _ChatPageState extends State<ChatPage> {
             onSelected: (value) {
               switch (value) {
                 case 1:
-                  Flexify.go( ContractorProfilePage(contractorId: widget.contractorId, contractor: null,),
+                  Flexify.go( ContractorProfilePage(contractorId: widget.receiverId, contractor: null,),
                       animation: FlexifyRouteAnimations.slide,
                       animationDuration: const Duration(milliseconds: 400));
                   break;
@@ -170,7 +185,7 @@ class _ChatPageState extends State<ChatPage> {
                        _chatServices.sendMessage(
                           widget.chatRoomId,
                           MessageModel(
-                              senderId: _userId,
+                              senderId: currentUserId,
                               messageType: "text",
                               timeStamp: DateTime.now(),
                               message: _messageController.text.toString()));

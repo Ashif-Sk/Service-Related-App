@@ -5,6 +5,7 @@ class FavouriteModel{
   final int price;
   final String name;
   final double rating;
+  final String option;
   final String address;
 
   FavouriteModel({
@@ -14,6 +15,7 @@ class FavouriteModel{
     required this.price,
     required this.rating,
     required this.imagePath,
+    required this.option,
     required this.address,
   });
 
@@ -23,6 +25,7 @@ class FavouriteModel{
       "serviceId": serviceId,
       "name" : name,
       "price" : price,
+      "option" : option,
       "rating" : rating,
       "imagePath" : imagePath,
       "address" : address,
@@ -38,6 +41,7 @@ class FavouriteModel{
         rating: json["rating"],
         imagePath: json["imagePath"],
         address: json["address"],
+      option: json["option"],
     );
   }
 }

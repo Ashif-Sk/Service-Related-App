@@ -89,7 +89,11 @@ class _ContractorProfilePageState extends State<ContractorProfilePage>
                     width: width * 0.26,
                     decoration: BoxDecoration(
                         image:  DecorationImage(
-                            image: NetworkImage(widget.contractor!.profileImage),
+                            image: widget.contractor!.profileImage == ''
+                                ? const NetworkImage(
+                                "https://th.bing.com/th/id/OIP.voWdvTJvgTx7MS9hmo8sQAHaHa?pid=ImgDet&w=202&h=202&c=7&dpr=1.3")
+                                : NetworkImage(
+                                widget.contractor!.profileImage),
                             fit: BoxFit.contain),
                         border: Border.all(color: Colors.white, width: 2),
                         shape: BoxShape.circle,

@@ -49,6 +49,7 @@ dependencies:
   rating_and_feedback_collector: ^0.0.3
   share_plus: ^10.1.4
   geolocator: ^13.0.2
+  geolocator_android: 4.6.1
   geocoding: ^3.0.0
   google_maps_flutter: ^2.10.0
   image_picker: ^1.1.2

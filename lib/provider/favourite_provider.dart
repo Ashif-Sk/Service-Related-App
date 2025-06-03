@@ -9,6 +9,22 @@ class FavouriteProvider with ChangeNotifier {
 
   List<FavouriteModel> get favourites => _favourites;
 
+  void addToWishlist(FavouriteModel favouriteItem){
+    final FavouriteModel? favouriteModel = _favourites.firstWhereOrNull((item){
+      bool isSameItem = item == favouriteItem;
+      return isSameItem;
+    });
+    if(favouriteModel == null){
+      _favourites.add(favouriteItem);
+      saveWishListState();
+    }else{
+      int index= _favourites.indexOf(favouriteItem);
+      _favourites.removeAt(index);
+      saveWishListState();
+    }
+    notifyListeners();
+  }
+
   Future<void> loadWishListState() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -49,13 +65,13 @@ class FavouriteProvider with ChangeNotifier {
     }
   }
 
-  bool isFavourite (FavouriteModel item){
-    final FavouriteModel? favouriteItem = _favourites.firstWhereOrNull((value){
+  bool isFavourite(FavouriteModel item) {
+    final FavouriteModel? favouriteItem = _favourites.firstWhereOrNull((value) {
       bool isSameItem = value.serviceId == item.serviceId;
       return isSameItem;
     });
 
-    if(favouriteItem == null){
+    if (favouriteItem == null) {
       return false;
     }
     return true;

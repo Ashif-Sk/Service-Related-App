@@ -4,10 +4,10 @@ class UserModel {
   final String phone;
   final String email;
   final String imagePath;
+  final String gender;
   final String address;
   final double latitude;
   final double longitude;
-  final List<String> favourite;
 
   UserModel({
     required this.userId,
@@ -15,10 +15,10 @@ class UserModel {
     required this.phone,
     required this.email,
     required this.imagePath,
+    required this.gender,
     required this.address,
     required this.latitude,
     required this.longitude,
-    required this.favourite,
   });
 
   Map<String,dynamic> toJson (){
@@ -28,11 +28,10 @@ class UserModel {
       "phone" : phone,
       "email" : email,
       "imagePath" : imagePath,
+      "gender" : gender,
       "address" : address,
       "latitude" : latitude,
-      "longitude" : longitude,
-      "favourite" : favourite
-
+      "longitude" : longitude
     };
   }
 
@@ -43,10 +42,10 @@ class UserModel {
         phone: json["phone"],
         email: json["email"],
         imagePath: json["imagePath"],
+        gender: json["gender"],
         address: json["address"],
         latitude: json["latitude"],
-        longitude: json["longitude"],
-        favourite: List<String>.from(json["favourite"] ?? [])
+        longitude: json["longitude"]
     );
   }
 }

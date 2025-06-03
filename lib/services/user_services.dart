@@ -16,11 +16,24 @@ class UserServices{
     }
   }
 
+  Future updateUserDetails(UserModel user,String userId) async{
+    try{
+      CollectionReference users= _firestore.collection('users');
+      await users.doc(userId).update(user.toJson());
+    }catch (e){
+      if (kDebugMode) {
+        print(e.toString());
+      }
+    }
+  }
+
   Future<UserModel?> getUserDetails(String userId)async{
+    final UserModel user;
     try{
       DocumentSnapshot doc = await _firestore.collection('users').doc(userId).get();
       if(doc.exists){
-        return UserModel.fromJson(doc.data() as Map<String,dynamic>);
+        user=  UserModel.fromJson(doc.data() as Map<String,dynamic>);
+        return user;
       }
 
     } catch (e){

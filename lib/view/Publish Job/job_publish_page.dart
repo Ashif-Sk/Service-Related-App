@@ -3,9 +3,7 @@ import 'dart:math';
 
 import 'package:contrador/components/ui_components.dart';
 import 'package:contrador/models/contractor_model.dart';
-import 'package:contrador/models/user_model.dart';
 import 'package:contrador/services/contractor_services.dart';
-import 'package:contrador/services/user_services.dart';
 import 'package:contrador/view/Publish%20Job/upload_photo_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flexify/flexify.dart';
@@ -29,7 +27,7 @@ class JobPublishPage extends StatefulWidget {
 class _JobPublishPageState extends State<JobPublishPage> {
   final UiComponents _uiComponents = UiComponents();
   final ContractorServices _contractorServices = ContractorServices();
-  final UserServices _userServices = UserServices();
+  // final UserServices _userServices = UserServices();
   // late UserModel? _userModel;
   final Random _random = Random();
   final String _userID = FirebaseAuth.instance.currentUser!.uid;
@@ -121,10 +119,6 @@ class _JobPublishPageState extends State<JobPublishPage> {
     _list = widget.subCategoryList;
     _subcategoryValue = _list[0];
     _addressController.text = 'Get current location';
-    // _userModel =  _userServices.getUserDetails(_userID) as UserModel?;
-    // _profileImage = _userModel!.imagePath;
-    // nameController.text = _userModel!.name;
-    // phoneNumberController.text = _userModel!.phone;
     super.initState();
   }
 

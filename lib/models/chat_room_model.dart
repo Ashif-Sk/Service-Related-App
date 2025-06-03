@@ -1,19 +1,13 @@
 class ChatRoomModel{
   final String chatRoomId;
-  final String userId;
-  final String receiverId;
-  final String profileImage;
-  final String receiverName;
+  List<String> users;
   final String lastMessage;
   final bool isTyping;
   final DateTime timeStamp;
 
   ChatRoomModel({
     required this.chatRoomId,
-    required this.userId,
-    required this.receiverId,
-    required this.receiverName,
-    required this.profileImage,
+    required this.users,
     required this.lastMessage,
     required this.timeStamp,
      this.isTyping = false,
@@ -22,11 +16,8 @@ class ChatRoomModel{
   Map<String,dynamic> toJson (){
     return {
       "chatRoomId" : chatRoomId,
-      "userId": userId,
-      "receiverId" : receiverId,
+      "users": users,
       "lastMessage" : lastMessage,
-      "receiverName" : receiverName,
-      "profileImage" : profileImage,
       "timeStamp" : timeStamp.toIso8601String(),
       "isTyping" : isTyping,
     };
@@ -35,10 +26,7 @@ class ChatRoomModel{
   factory ChatRoomModel.fromJson (Map<String,dynamic> json){
     return ChatRoomModel(
       chatRoomId: json["chatRoomId"],
-      userId: json["userId"],
-      receiverId: json["receiverId"],
-      receiverName: json["receiverName"],
-      profileImage: json["profileImage"],
+      users: json["users"],
       lastMessage: json["lastMessage"],
       timeStamp: DateTime.parse(json["timeStamp"]),
       isTyping: json["isTyping"],
