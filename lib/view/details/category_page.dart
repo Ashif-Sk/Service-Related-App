@@ -108,7 +108,6 @@ class _CategoryPageState extends State<CategoryPage> {
                     );
                   } else {
                     List<ContractorModel>? contractorList = snapshot.data;
-                    print(contractorList!.length);
                     return GridView.builder(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         shrinkWrap: true,
@@ -119,7 +118,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                 crossAxisSpacing: 10,
                                 mainAxisSpacing: 10,
                                 crossAxisCount: 2),
-                        itemCount: contractorList.length,
+                        itemCount: contractorList!.length,
                         itemBuilder: (context, index) {
                           ContractorModel contractor = contractorList[index];
                           return InkWell(

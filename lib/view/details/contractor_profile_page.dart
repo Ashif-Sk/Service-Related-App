@@ -208,7 +208,6 @@ class _ContractorProfilePageState extends State<ContractorProfilePage>
                 indicatorSize: TabBarIndicatorSize.tab,
                 indicator: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    // border: Border.all(color: Theme.of(context).colorScheme.secondary),
                     color: Theme.of(context).colorScheme.tertiary),
                 tabs: const [
                   Tab(
@@ -221,9 +220,9 @@ class _ContractorProfilePageState extends State<ContractorProfilePage>
           ),
           Flexible(
             fit: FlexFit.tight,
-            child: TabBarView(controller: _tabController, children: const [
-              ServicesTabView(),
-              ReviewTabView(),
+            child: TabBarView(controller: _tabController, children:  [
+              ServicesTabView(contractorId: widget.contractorId,),
+               ReviewTabView(contractorId: widget.contractorId,contractor: widget.contractor,),
             ]),
           )
         ],

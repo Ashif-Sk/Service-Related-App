@@ -69,14 +69,13 @@ class _MyServicesPageState extends State<MyServicesPage> {
               );
             }
             List<ContractorModel>? myService= snapshot.data;
-            print(myService);
             return ListView.builder(
                 shrinkWrap: true,
                 itemCount: myService?.length,
                 itemBuilder: (context, index) {
                   ContractorModel service = myService![index];
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
+                    padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 8),
                     child: SizedBox(
                       height: height * 0.137,
                       width: double.maxFinite,
@@ -114,7 +113,7 @@ class _MyServicesPageState extends State<MyServicesPage> {
                                               .secondary,
                                           fontSize: 35.rt,
                                           fontWeight: FontWeight.bold,
-                                          decoration: TextDecoration.underline),
+                                      ),
                                     ),
                                   ),
                                   Text.rich(TextSpan(children: [

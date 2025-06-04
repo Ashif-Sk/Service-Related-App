@@ -1,5 +1,4 @@
 class ReviewModel {
-  final String reviewId;
   final String contractorId;
   final String reviewText;
   final double rating;
@@ -9,7 +8,6 @@ class ReviewModel {
   final DateTime reviewDate;
 
   ReviewModel({
-    required this.reviewId,
     required this.contractorId,
     required this.reviewText,
     required this.rating,
@@ -21,7 +19,6 @@ class ReviewModel {
 
   Map<String,dynamic> toJson (){
     return {
-      "reviewId": reviewId,
       "contractorId" : contractorId,
       "reviewText" : reviewText,
       "rating" : rating,
@@ -34,7 +31,6 @@ class ReviewModel {
 
   factory ReviewModel.fromJson (Map<String,dynamic> json){
     return ReviewModel(
-        reviewId: json["reviewId"],
         contractorId: json["contractorId"],
         reviewText: json["reviewText"],
         rating: json["rating"],
