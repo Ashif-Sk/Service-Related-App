@@ -128,10 +128,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
       _profileImage = userData.imagePath;
     }
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Theme.of(context).colorScheme.tertiary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: _uiComponents.headline2('Edit Profile'),
         ),
         body: Padding(

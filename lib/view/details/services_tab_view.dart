@@ -58,7 +58,7 @@ class _ServicesTabViewState extends State<ServicesTabView> {
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5)),
-                    color: Colors.grey.withOpacity(0.1),
+                    color: Theme.of(context).colorScheme.primaryContainer,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(

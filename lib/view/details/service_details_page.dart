@@ -45,10 +45,10 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
     final favourite = Provider.of<FavouriteProvider>(context,listen: true);
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.tertiary,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: _uiComponents
             .headline2(widget.contractor.subcategory.toUpperCase()),
       ),
@@ -111,7 +111,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                               textStyle: TextStyle(
                                 overflow: TextOverflow.ellipsis,
                                 color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 50.rt,
+                                fontSize: 24,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -204,7 +204,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                     contentPadding: const EdgeInsets.all(5),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    tileColor: Colors.grey.withOpacity(0.1),
+                    tileColor: Theme.of(context).colorScheme.primaryContainer,
                     leading: Container(
                       height: height * 0.08,
                       width: width * 0.14,
@@ -247,7 +247,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                   padding: const EdgeInsets.all(15.0),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.withOpacity(0.1)),
+                      color: Theme.of(context).colorScheme.primaryContainer),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -317,7 +317,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                     padding: const EdgeInsets.all(15.0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey.withOpacity(0.1)),
+                        color: Theme.of(context).colorScheme.primaryContainer),
                     child: Text(widget.contractor.description,
                         textAlign: TextAlign.start,
                         style: GoogleFonts.abel(

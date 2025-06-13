@@ -24,7 +24,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: _uiComponents
             .headline2("Messages"),
       ),

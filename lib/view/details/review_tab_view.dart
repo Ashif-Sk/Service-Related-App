@@ -111,7 +111,7 @@ class _ReviewTabViewState extends State<ReviewTabView> {
                     padding: const EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey.withOpacity(0.1)),
+                        color: Theme.of(context).colorScheme.primaryContainer),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [

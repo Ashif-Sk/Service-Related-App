@@ -7,7 +7,7 @@ class UiComponents {
     return Text(text,
         textAlign: TextAlign.center,
         style: GoogleFonts.abel(
-            textStyle: const TextStyle(
+            textStyle:  const TextStyle(
                 overflow: TextOverflow.visible,
                 fontSize: 20,
                 fontWeight: FontWeight.w600)));
@@ -279,8 +279,8 @@ class CategoryCard extends StatelessWidget {
         height: height * 0.19,
         width: width * 0.30,
         child: Card(
-          elevation: 0.5,
-          color: Colors.white,
+          elevation: 0,
+          color: Theme.of(context).colorScheme.primaryContainer,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -735,7 +735,7 @@ class _ReusableIconButtonState extends State<ReusableIconButton> {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      backgroundColor: Colors.grey.withOpacity(0.1),
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       radius: widget.radius,
       child: IconButton(
         onPressed: widget.onPressed,

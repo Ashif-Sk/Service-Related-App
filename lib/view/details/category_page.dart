@@ -36,7 +36,7 @@ class _CategoryPageState extends State<CategoryPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: _uiComponents.headline2(widget.appBarTitle),
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -70,7 +70,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                       widget.subCategoryList[index]
                                           .toLowerCase()
                                   ? Theme.of(context).colorScheme.primary
-                                  : Colors.white,
+                                  : Theme.of(context).colorScheme.primaryContainer,
                               borderRadius: BorderRadius.circular(5)),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 12),

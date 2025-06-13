@@ -28,7 +28,7 @@ class _MyServicesPageState extends State<MyServicesPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: _uiComponents.headline2('My services'),
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,

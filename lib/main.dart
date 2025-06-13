@@ -42,11 +42,11 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
                 colorScheme: ColorScheme.light(
               brightness: Brightness.light,
-              surface: Colors.grey.shade300,
+              surface: Colors.white,
               primary: const Color.fromRGBO(224, 79, 13, 1),
               secondary: Colors.black,
               tertiary: Colors.white,
-              primaryContainer: Colors.white,
+              primaryContainer: Colors.grey.withOpacity(0.13),
               secondaryContainer: const Color.fromRGBO(224, 79, 13, 0.1),
             )),
             home: const SplashPage()));

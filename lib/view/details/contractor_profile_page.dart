@@ -168,7 +168,7 @@ class _ContractorProfilePageState extends State<ContractorProfilePage>
             padding: const EdgeInsets.all(15.0),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.grey.withOpacity(0.1)),
+                color: Theme.of(context).colorScheme.primaryContainer),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

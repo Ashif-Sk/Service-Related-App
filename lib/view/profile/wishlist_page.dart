@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:rating_and_feedback_collector/rating_and_feedback_collector.dart';
 
-import '../details/service_details_page.dart';
 
 class WishlistPage extends StatefulWidget {
   const WishlistPage({super.key});
@@ -27,7 +26,7 @@ class _WishlistPageState extends State<WishlistPage> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Theme.of(context).colorScheme.tertiary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: _uiComponents.headline2('Wishlist'),
         ),
         backgroundColor: Theme.of(context).colorScheme.surface,

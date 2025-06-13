@@ -3,6 +3,7 @@ import 'package:contrador/view/details/category_page.dart';
 import 'package:contrador/view/search_page.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,65 +23,132 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(239, 72, 54, 1),
+        title: Row(
+          children: [
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  Flexify.go(const SearchPage(),
+                      animation: FlexifyRouteAnimations.slide,
+                      animationDuration: const Duration(milliseconds: 400));
+                },
+                child: Container(
+                    height: 45,
+                    // width: width * 0.8,
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              offset: const Offset(12, 26),
+                              blurRadius: 50,
+                              spreadRadius: 0,
+                              color: Colors.grey.withOpacity(.1)),
+                        ],
+                        borderRadius: BorderRadius.circular(10),
+                        color: Theme.of(context).colorScheme.tertiary),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(Icons.search_rounded,
+                            size: 20, color: Theme.of(context).colorScheme.primary),
+                        40.horizontalSpace,
+                        _uiComponents.normalText('Search by ID,name etc')
+                      ],
+                    )),
+              ),
+            ),
+            20.horizontalSpace,
+            const CircleAvatar(
+              backgroundColor: Colors.white,
+              child: Icon(Icons.person,color: Colors.black,),
+            )
+          ],
+        ),
+        elevation: 0,
       ),
       body: ListView(
         // padding: const EdgeInsets.symmetric(horizontal: 10),
         children: [
           Container(
-            height: height * 0.4,
+            height: height * 0.3,
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color.fromRGBO(239, 72, 54, 1),
-                    Color.fromRGBO(250, 169, 62, 1),
-                  ]),
-              borderRadius: BorderRadius.only(bottomRight: Radius.circular(20),bottomLeft: Radius.circular(20))
-            ),
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color.fromRGBO(239, 72, 54, 1),
+                      Color.fromRGBO(250, 169, 62, 1),
+                    ]),
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(20),
+                    bottomLeft: Radius.circular(20))),
             child: Stack(
-              fit: StackFit.loose,
+              alignment: Alignment.center,
               children: [
                 Positioned(
-                  top: 10,
-                    left: 10,
-                    child: Transform.rotate(angle: 5,
-                    child: Image.asset("images/house.png",color: Colors.white,)))
+                  top: 60,
+                    child: Column(
+                      children: [
+                        Text("Your Fix",
+                        style: GoogleFonts.lobster(
+                          textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 26,
+                            fontWeight: FontWeight.w400
+                          )
+                        ),),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.black, backgroundColor: Colors.white,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                            ),
+                          ),
+                          onPressed: () {},
+                          child:  Text('Just a Tap',
+                              style: GoogleFonts.syne(
+                                textStyle: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                ),
+                              )
+                          ),
+                        ),
+                        Text("Away",
+                          style: GoogleFonts.lobster(
+                              textStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w400
+                              )
+                          ),),
+                      ],
+                    )),
+                Positioned(
+                  bottom: 30,
+                  left: 5,
+                  child: Transform.rotate(
+                    angle: 0,
+                    child: Image.asset(
+                      "images/hammer.png",
+                      color: Colors.white,
+                      height: 100,
+                    ),),),
+                Positioned(
+                  bottom: 40,
+                  right: -10,
+                  child: Transform.rotate(
+                    angle: 0.4,
+                    child: Image.asset(
+                      "images/paint-roller.png",
+                      color: Colors.white,
+                      height: 100,
+                    ),),),
               ],
             ),
           ),
           10.verticalSpace,
-          InkWell(
-            onTap: () {
-              Flexify.go(const SearchPage(),
-                  animation: FlexifyRouteAnimations.slide,
-                  animationDuration: const Duration(milliseconds: 400));
-            },
-            child: Container(
-                height: 50,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          offset: const Offset(12, 26),
-                          blurRadius: 50,
-                          spreadRadius: 0,
-                          color: Colors.grey.withOpacity(.1)),
-                    ],
-                    borderRadius: BorderRadius.circular(10),
-                    color: Theme.of(context).colorScheme.tertiary),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(Icons.search_rounded,
-                        size: 20, color: Theme.of(context).colorScheme.primary),
-                    40.horizontalSpace,
-                    _uiComponents.normalText('Search by ID,name etc')
-                  ],
-                )),
-          ),
-          15.verticalSpace,
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Align(
@@ -225,7 +293,21 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-          )
+          ),
+          15.verticalSpace,
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Text("With Love,\nContrador.",
+              style: GoogleFonts.archivoBlack(
+                  textStyle: const TextStyle(
+                    height: 1,
+                      color: Colors.grey,
+                      fontSize: 42,
+                      fontWeight: FontWeight.bold
+                  )
+              ),),
+          ),
+          20.verticalSpace,
         ],
       ),
     );

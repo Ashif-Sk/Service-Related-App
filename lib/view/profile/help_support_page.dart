@@ -15,7 +15,7 @@ class _HelpSupportPageState extends State<HelpSupportPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: _uiComponents.headline2('Help & Support'),
       ),
     );
