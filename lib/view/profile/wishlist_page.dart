@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:rating_and_feedback_collector/rating_and_feedback_collector.dart';
 
+import '../details/service_details_page.dart';
+
 class WishlistPage extends StatefulWidget {
   const WishlistPage({super.key});
 
@@ -33,7 +35,6 @@ class _WishlistPageState extends State<WishlistPage> {
             builder: (context, favouriteProvider, child) {
           final List<FavouriteModel> favouriteItems =
               favouriteProvider.favourites;
-          print(favouriteItems);
           if(favouriteItems.isEmpty){
             return Center(
               child: Column(
@@ -60,7 +61,8 @@ class _WishlistPageState extends State<WishlistPage> {
                 FavouriteModel item = favouriteItems[index];
                 _currentRating = item.rating;
                 return InkWell(
-                  onTap: () {},
+                  onTap: () {
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primaryContainer,

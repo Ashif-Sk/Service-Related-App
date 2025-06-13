@@ -1,13 +1,16 @@
 import 'package:contrador/components/ui_components.dart';
+import 'package:contrador/models/favourite_model.dart';
 import 'package:contrador/services/contractor_services.dart';
 import 'package:contrador/view/details/service_details_page.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:rating_and_feedback_collector/rating_and_feedback_collector.dart';
 
 import '../../models/contractor_model.dart';
+import '../../provider/favourite_provider.dart';
 
 class CategoryPage extends StatefulWidget {
   final String appBarTitle;
@@ -24,11 +27,12 @@ class _CategoryPageState extends State<CategoryPage> {
   final UiComponents _uiComponents = UiComponents();
   final ContractorServices _contractorServices = ContractorServices();
   double currentRating = 4.0;
-  String categoryName = 'all';
+  String _categoryName = 'all';
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.sizeOf(context).height;
+    final favourite = Provider.of<FavouriteProvider>(context,listen: true);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -56,13 +60,13 @@ class _CategoryPageState extends State<CategoryPage> {
                       child: InkWell(
                         onTap: () {
                           setState(() {
-                            categoryName =
+                            _categoryName =
                                 widget.subCategoryList[index].toLowerCase();
                           });
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                              color: categoryName ==
+                              color: _categoryName ==
                                       widget.subCategoryList[index]
                                           .toLowerCase()
                                   ? Theme.of(context).colorScheme.primary
@@ -76,7 +80,7 @@ class _CategoryPageState extends State<CategoryPage> {
                               style: GoogleFonts.abel(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 30.rt,
-                                color: categoryName ==
+                                color: _categoryName ==
                                         widget.subCategoryList[index]
                                             .toLowerCase()
                                     ? Theme.of(context).colorScheme.tertiary
@@ -92,7 +96,7 @@ class _CategoryPageState extends State<CategoryPage> {
             10.verticalSpace,
             FutureBuilder<List<ContractorModel>?>(
                 future: _contractorServices
-                    .getAllServicesBySubcategoryId(categoryName.toLowerCase()),
+                    .getAllServicesBySubcategoryId(_categoryName.toLowerCase()),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
@@ -121,6 +125,15 @@ class _CategoryPageState extends State<CategoryPage> {
                         itemCount: contractorList!.length,
                         itemBuilder: (context, index) {
                           ContractorModel contractor = contractorList[index];
+                         final favouriteModel = FavouriteModel(
+                              contractorId: contractorList[index].contractorId,
+                              serviceId:  contractorList[index].serviceId,
+                              name:  contractorList[index].name,
+                              price:  int.parse(contractorList[index].cost),
+                              rating:  contractorList[index].rating,
+                              imagePath:  contractorList[index].imagePaths.isEmpty?'':contractorList[index].imagePaths[0],
+                              option:  contractorList[index].option,
+                              address:  contractorList[index].address);
                           return InkWell(
                             onTap: () {
                               Flexify.go(
@@ -158,20 +171,21 @@ class _CategoryPageState extends State<CategoryPage> {
                                             ),
                                           ),
                                         ),
-                                        Positioned(
-                                            right: 0,
-                                            child: CircleAvatar(
-                                              radius: 15,
-                                              child: IconButton(
-                                                onPressed: () {},
-                                                icon: const Icon(
-                                                  Icons
-                                                      .favorite_outline_rounded,
-                                                  color: Colors.black,
-                                                  size: 15,
-                                                ),
-                                              ),
-                                            ))
+                                        // Positioned(
+                                        //     right: 0,
+                                        //     child: CircleAvatar(
+                                        //       radius: 15,
+                                        //       child: IconButton(
+                                        //         onPressed: () {
+                                        //           favourite.addToWishlist(favouriteModel);
+                                        //         },
+                                        //         icon:  Icon(
+                                        //           favourite.isFavourite(favouriteModel)?Icons.favorite:Icons.favorite_outline_rounded,
+                                        //           color: favourite.isFavourite(favouriteModel)?Colors.red:Colors.black,
+                                        //           size: 15,
+                                        //         ),
+                                        //       ),
+                                        //     ))
                                       ],
                                     ),
                                     2.verticalSpace,

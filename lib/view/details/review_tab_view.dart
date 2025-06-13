@@ -30,10 +30,26 @@ class _ReviewTabViewState extends State<ReviewTabView> {
 
   final TextEditingController _reviewController = TextEditingController();
   double _selectedRating = 4;
+  double _rating = 0;
+  int _totalReviews = 0;
+
+  Future<void> loadRatingData(String contractorId) async {
+    Map<String, dynamic>? ratingData = await _reviewServices.getRatingData(contractorId);
+
+    if (ratingData != null) {
+      setState(() {
+        _rating = ratingData['rating'] ?? 0.0;
+        _totalReviews = ratingData['totalRatings'] ?? "";
+      });
+    }
+  }
+
 
   @override
   void initState() {
     _userProvider.getUserDetails();
+    loadRatingData(widget.contractorId);
+
     super.initState();
   }
 
@@ -120,10 +136,10 @@ class _ReviewTabViewState extends State<ReviewTabView> {
                                 // Color of filled rating units
                                 emptyColor: Colors.grey,
                                 // Color of empty rating units
-                                currentRating: widget.contractor!.rating,
+                                currentRating: _rating,
                                 onRatingChanged: (changedRating) {})),
                         Text(
-                          '(${widget.contractor!.totalRatings})',
+                          '($_totalReviews)',
                           style: GoogleFonts.abel(
                               textStyle: TextStyle(
                                   overflow: TextOverflow.visible,

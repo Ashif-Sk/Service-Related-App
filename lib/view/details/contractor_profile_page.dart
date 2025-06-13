@@ -174,8 +174,8 @@ class _ContractorProfilePageState extends State<ContractorProfilePage>
               children: [
                 ReusableDetailsRow(
                     uiComponents: _uiComponents,
-                    title: 'Gender',
-                    subTitle: "N/A"),
+                    title: 'Service Id',
+                    subTitle: widget.contractor!.serviceId),
                 ReusableDetailsRow(
                     uiComponents: _uiComponents,
                     title: 'Experience',

@@ -12,7 +12,7 @@ class ReviewServices {
           .collection('reviews');
       await reviews.add(review.toJson());
     } catch (e) {
-      print(e.toString());
+      print("Error in uploading review${e.toString()}");
     }
   }
 
@@ -40,14 +40,40 @@ class ReviewServices {
         }
 
         double newRating = totalRating/ratingCount;
+        print(newRating);
 
-        await _firestore.collection('contractor').doc(contractorId).update({
-          "rating" : newRating,
-          "totalRatings" : ratingCount,
+        await _firestore.collection('contractor').doc(contractorId).get().then((snapshot) async {
+          if(snapshot.exists){
+            await _firestore.collection('contractor').doc(contractorId).update({
+              "rating" : newRating,
+              "totalRatings" : ratingCount,
+            });
+          } else{
+            await _firestore.collection('contractor').doc(contractorId).set({
+              "rating" : newRating,
+              "totalRatings" : ratingCount,
+            });
+          }
         });
+
       }
     } catch (e){
-      print('Error in updating rating');
+      print("Error in rating update${e.toString()}");
     }
   }
+
+  Future<Map<String, dynamic>?> getRatingData(String contractorId) async {
+    DocumentSnapshot snapshot =
+    await FirebaseFirestore.instance.collection('contractor').doc(contractorId).get();
+
+    if (snapshot.exists) {
+      Map<String, dynamic>? ratingData = snapshot.data() as Map<String, dynamic>?;
+      print(ratingData);
+      return ratingData;
+    } else {
+      print("No data found.");
+      return null;
+    }
+  }
+
 }

@@ -1,10 +1,12 @@
 import 'package:contrador/components/ui_components.dart';
+import 'package:contrador/models/favourite_model.dart';
+import 'package:contrador/provider/favourite_provider.dart';
 import 'package:contrador/services/chat_services.dart';
 import 'package:contrador/view/details/contractor_profile_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:rating_and_feedback_collector/rating_and_feedback_collector.dart';
 
 import '../../models/contractor_model.dart';
@@ -22,11 +24,26 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
   final UiComponents _uiComponents = UiComponents();
   final ChatServices _chatServices = ChatServices();
   double currentRating = 4.0;
-
+  late final FavouriteModel _favouriteModel;
+  @override
+  void initState() {
+   _favouriteModel = FavouriteModel(
+        contractorId: widget.contractor.contractorId,
+        serviceId:  widget.contractor.serviceId,
+        name:  widget.contractor.name,
+       price:  int.parse(widget.contractor.cost),
+        rating:  widget.contractor.rating,
+        imagePath:  widget.contractor.imagePaths.isEmpty?'':widget.contractor.imagePaths[0],
+        option:  widget.contractor.option,
+        address:  widget.contractor.address);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.sizeOf(context).height;
     double width = MediaQuery.sizeOf(context).width;
+    final favourite = Provider.of<FavouriteProvider>(context,listen: true);
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.tertiary,
       appBar: AppBar(
@@ -70,10 +87,12 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                         top: 10,
                         child: ReusableIconButton(
                             radius: 20,
-                            icon: Icons.favorite_outline_rounded,
-                            iconColor: Colors.black,
+                            icon: favourite.isFavourite(_favouriteModel)?Icons.favorite:Icons.favorite_outline_rounded,
+                            iconColor: favourite.isFavourite(_favouriteModel)?Colors.red:Colors.white,
                             iconSize: 20,
-                            onPressed: () {}))
+                            onPressed: () {
+                              favourite.addToWishlist(_favouriteModel);
+                            }))
                   ],
                 ),
                 5.verticalSpace,

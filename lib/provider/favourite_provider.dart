@@ -11,7 +11,7 @@ class FavouriteProvider with ChangeNotifier {
 
   void addToWishlist(FavouriteModel favouriteItem){
     final FavouriteModel? favouriteModel = _favourites.firstWhereOrNull((item){
-      bool isSameItem = item == favouriteItem;
+      bool isSameItem = item.serviceId == favouriteItem.serviceId;
       return isSameItem;
     });
     if(favouriteModel == null){
@@ -19,6 +19,7 @@ class FavouriteProvider with ChangeNotifier {
       saveWishListState();
     }else{
       int index= _favourites.indexOf(favouriteItem);
+      print(index);
       _favourites.removeAt(index);
       saveWishListState();
     }
