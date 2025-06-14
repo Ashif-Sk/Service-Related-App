@@ -32,14 +32,15 @@ class _ChatPageState extends State<ChatPage> {
 
 
   void loadReceiverInfo() async {
-    var doc = await FirebaseFirestore.instance
+    var data = await FirebaseFirestore.instance
         .collection('users')
         .doc(widget.receiverId)
         .get();
+    print(data);
 
     setState(() {
-      receiverName = doc['name'] ?? 'User';
-      receiverProfile = doc['profilePic'] ?? '';
+      receiverName = data['name'] ?? 'User';
+      receiverProfile = data['imagePath'] ?? '';
     });
   }
 
@@ -50,13 +51,19 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   @override
+  void initState() {
+    loadReceiverInfo();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: _uiComponents.headline2(receiverName),
         actions: [
           PopupMenuButton<int>(

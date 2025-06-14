@@ -10,14 +10,21 @@ import '../models/chat_room_model.dart';
 
 class ChatHomePage extends StatefulWidget {
   const ChatHomePage({super.key});
+
   @override
   State<ChatHomePage> createState() => _ChatHomePageState();
 }
 
 class _ChatHomePageState extends State<ChatHomePage> {
-  final String userId = FirebaseAuth.instance.currentUser!.uid;
+  String _userId = '';
   final ChatServices _chatServices = ChatServices();
   final UiComponents _uiComponents = UiComponents();
+
+  @override
+  void initState() {
+    _userId = FirebaseAuth.instance.currentUser!.uid;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +32,10 @@ class _ChatHomePageState extends State<ChatHomePage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: _uiComponents
-            .headline2("Messages"),
+        title: _uiComponents.headline2("Messages"),
       ),
-      body: StreamBuilder<List<ChatRoomModel>>(
-        stream: _chatServices.getUserChatRooms(userId),
+      body: FutureBuilder<List<ChatRoomModel>>(
+        future: _chatServices.getUserChatRooms(_userId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -49,37 +55,49 @@ class _ChatHomePageState extends State<ChatHomePage> {
             itemCount: chatRooms.length,
             itemBuilder: (context, index) {
               var chatRoom = chatRooms[index];
-              var otherUserId =
-              chatRoom.users.firstWhere((id) => id != userId); // Get the other user's ID
+              var otherUserId = chatRoom.users
+                  .firstWhere((id) => id != _userId); // Get the other user's ID
 
               return FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance.collection('users').doc(otherUserId).get(),
+                future: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(otherUserId)
+                    .get(),
                 builder: (context, userSnapshot) {
                   if (!userSnapshot.hasData) {
                     return const ListTile(title: Text("Loading..."));
                   }
                   var userData = userSnapshot.data!;
                   String name = userData['name'] ?? "Unknown";
-                  String profilePic = userData['profilePic'] ?? "";
+                  String profilePic = userData['imagePath'] ?? "";
 
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: profilePic.isNotEmpty
-                          ? NetworkImage(profilePic)
-                          : const AssetImage('images/profile.png') as ImageProvider,
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: ListTile(shape: const Border(bottom: BorderSide(color:Colors.grey,width: 0.5)),
+                      tileColor: Theme.of(context).colorScheme.primaryContainer,
+                      leading: CircleAvatar(
+                        radius: 30,
+                        backgroundImage: profilePic.isNotEmpty
+                            ? NetworkImage(profilePic)
+                            : const AssetImage('images/profile.png')
+                                as ImageProvider,
+                      ),
+                      title: _uiComponents.headline3(name),
+                      subtitle: Text(chatRoom.lastMessage,
+                          maxLines: 1, overflow: TextOverflow.ellipsis),
+                      trailing: Text(
+                        "${chatRoom.timeStamp.day}/${chatRoom.timeStamp.month}/${chatRoom.timeStamp.year}", // Format time
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                      onTap: () {
+                        Flexify.go(
+                            ChatPage(
+                                receiverId: otherUserId,
+                                chatRoomId: chatRoom.chatRoomId),
+                            animation: FlexifyRouteAnimations.slide,
+                            animationDuration: const Duration(milliseconds: 400));
+                      },
                     ),
-                    title: Text(name),
-                    subtitle: Text(chatRoom.lastMessage, maxLines: 1, overflow: TextOverflow.ellipsis),
-                    trailing: Text(
-                      "${chatRoom.timeStamp.hour}:${chatRoom.timeStamp.minute}", // Format time
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                    onTap: () {
-                      Flexify.go(
-                           ChatPage(receiverId: otherUserId, chatRoomId: chatRoom.chatRoomId),
-                          animation: FlexifyRouteAnimations.slide,
-                          animationDuration: const Duration(milliseconds: 400));
-                    },
                   );
                 },
               );

@@ -11,16 +11,21 @@ class ChatServices {
   /*
   Chat room services
    */
-  Stream<List<ChatRoomModel>> getUserChatRooms(String userId) {
-    return FirebaseFirestore.instance
-        .collection('chats')
-        .where('users', arrayContains: userId) // Get only the chats where the user is a participant
-        .orderBy('timestamp', descending: true) // Show recent chats first
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-        .map((doc) => ChatRoomModel.fromJson(doc.data()))
-        .toList());
+  Future<List<ChatRoomModel>> getUserChatRooms(String userId) async {
+    try {
+      final snapshot = await _firestore
+          .collection('chats')
+          .where('users', arrayContains: userId)
+      .orderBy("timeStamp",descending: true)
+          .get();
+
+      return snapshot.docs.map((doc) => ChatRoomModel.fromJson(doc.data())).toList();
+    } catch (e) {
+      print("Error in getting chatRooms: ${e.toString()}");
+      return []; // Returning an empty list instead of null
+    }
   }
+
 
 
   Future<String> createOrGetChatRoom(String userId1, String userId2) async {
@@ -28,7 +33,7 @@ class ChatServices {
         ? '$userId1\_$userId2'
         : '$userId2\_$userId1';
 
-    final docRef = FirebaseFirestore.instance.collection('chats').doc(chatRoomId);
+    final docRef = _firestore.collection('chats').doc(chatRoomId);
     final docSnap = await docRef.get();
 
     if (!docSnap.exists) {
@@ -49,8 +54,6 @@ class ChatServices {
   void startNewChat(String otherUserId) async {
     String currentUserId = FirebaseAuth.instance.currentUser!.uid;
     String chatRoomId = await createOrGetChatRoom(currentUserId, otherUserId);
-
-    // Optional: navigate to the chat screen
     Flexify.go(ChatPage(chatRoomId: chatRoomId, receiverId: otherUserId));
   }
 

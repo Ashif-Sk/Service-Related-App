@@ -128,23 +128,19 @@ class _HomePageState extends State<HomePage> {
                 Positioned(
                   bottom: 30,
                   left: 5,
-                  child: Transform.rotate(
-                    angle: 0,
-                    child: Image.asset(
-                      "images/hammer.png",
-                      color: Colors.white,
-                      height: 100,
-                    ),),),
+                  child: Image.asset(
+                    "images/hammer-unscreen.gif",
+                    // color: Colors.white,
+                    height: 100,
+                  ),),
                 Positioned(
                   bottom: 40,
-                  right: -10,
-                  child: Transform.rotate(
-                    angle: 0.4,
-                    child: Image.asset(
-                      "images/paint-roller.png",
-                      color: Colors.white,
-                      height: 100,
-                    ),),),
+                  right: 5,
+                  child: Image.asset(
+                    "images/helmet-unscreen.gif",
+                    // color: Colors.white,
+                    height: 100,
+                  ),),
               ],
             ),
           ),
@@ -294,18 +290,21 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          15.verticalSpace,
+          20.verticalSpace,
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
-            child: Text("With Love,\nContrador.",
-              style: GoogleFonts.archivoBlack(
-                  textStyle: const TextStyle(
-                    height: 1,
-                      color: Colors.grey,
-                      fontSize: 42,
-                      fontWeight: FontWeight.bold
-                  )
-              ),),
+            child: Transform.scale(
+              scaleY: 1.2,
+              child: Text("With Love,\nContrador.",
+                style: GoogleFonts.archivoBlack(
+                    textStyle: const TextStyle(
+                      height: 0.9,
+                        color: Colors.grey,
+                        fontSize: 42,
+                        fontWeight: FontWeight.bold
+                    )
+                ),),
+            ),
           ),
           20.verticalSpace,
         ],

@@ -68,9 +68,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           : NetworkImage(
                           user.userData!.imagePath),
                       fit: BoxFit.contain),
-                  border: Border.all(color: Colors.white, width: 2),
+                  border: Border.all(color: Colors.grey, width: 2),
                   shape: BoxShape.circle,
-                  color: Colors.grey.withOpacity(0.35)),
+                  color: Colors.grey),
             ),
             4.verticalSpace,
             user.userData != null ? _uiComponents.headline2(user.userData!.name):SpinKitCircle(

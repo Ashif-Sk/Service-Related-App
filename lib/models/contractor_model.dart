@@ -61,7 +61,7 @@ class ContractorModel {
       "imagePaths": imagePaths,
       "rating": rating,
       "totalRatings": totalRatings,
-      "timeStamp": timeStamp.toIso8601String(),
+      "timeStamp": timeStamp.toString(),
     };
   }
 

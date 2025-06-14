@@ -1,3 +1,6 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ChatRoomModel{
   final String chatRoomId;
   List<String> users;
@@ -18,18 +21,20 @@ class ChatRoomModel{
       "chatRoomId" : chatRoomId,
       "users": users,
       "lastMessage" : lastMessage,
-      "timeStamp" : timeStamp.toIso8601String(),
+      "timeStamp" : Timestamp.fromDate(timeStamp),
       "isTyping" : isTyping,
     };
   }
 
   factory ChatRoomModel.fromJson (Map<String,dynamic> json){
     return ChatRoomModel(
-      chatRoomId: json["chatRoomId"],
-      users: json["users"],
-      lastMessage: json["lastMessage"],
-      timeStamp: DateTime.parse(json["timeStamp"]),
-      isTyping: json["isTyping"],
+      chatRoomId: json['chatRoomId'] as String,
+      users: (json['users'] as List<dynamic>).map((e) => e.toString()).toList(), // Cast users correctly
+      lastMessage: json['lastMessage'] as String,
+      isTyping: json['isTyping'] as bool,
+      timeStamp: json['timeStamp'] is Timestamp
+          ? (json['timeStamp'] as Timestamp).toDate()  // Convert Timestamp to DateTime
+          : DateTime.now(),
     );
   }
 }

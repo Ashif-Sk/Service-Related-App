@@ -79,7 +79,7 @@ class _ServicesTabViewState extends State<ServicesTabView> {
                             children: [
                               5.verticalSpace,
                               Text(
-                                service.name,
+                                service.businessName,
                                 style: GoogleFonts.abel(
                                   textStyle: TextStyle(
                                     overflow: TextOverflow.ellipsis,
@@ -102,7 +102,7 @@ class _ServicesTabViewState extends State<ServicesTabView> {
                                           fontWeight: FontWeight.w600)),
                                 ),
                                 TextSpan(
-                                    text: "/${service.option}",
+                                    text: "/${service.pricingModel}",
                                     style: GoogleFonts.abel(
                                         textStyle: TextStyle(
                                             overflow: TextOverflow.visible,

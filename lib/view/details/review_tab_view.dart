@@ -5,6 +5,7 @@ import 'package:contrador/provider/user_provider.dart';
 import 'package:contrador/services/review_services.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -58,209 +59,210 @@ class _ReviewTabViewState extends State<ReviewTabView> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     final user = Provider.of<UserProvider>(context, listen: true).userData;
-    return StreamBuilder(
-        stream: _reviewServices.getReviews(widget.contractorId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: SpinKitCircle(
-                size: 30,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            );
-          }
-
-          if (snapshot.hasError) {
-            return Center(
-              child: _uiComponents.normalText(snapshot.error.toString()),
-            );
-          }
-
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'images/feedback.png',
-                    fit: BoxFit.fill,
-                    height: height * 0.25,
-                    width: width * 0.5,
-                  ),
-                  15.verticalSpace,
-                  NormalMaterialButton(
-                      text: 'Be a first person to write a review',
-                      onPressed: () {
-                        showReviewDialog(context, user);
-                      }),
-                ],
-              ),
-            );
-          }
-          List<ReviewModel>? reviews = snapshot.data;
-          return Padding(
+    return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  5.verticalSpace,
-                  Container(
-                    // margin: const EdgeInsets.symmetric(horizontal: 10),
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Theme.of(context).colorScheme.primaryContainer),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        _uiComponents.headline3('Total Rating'),
-                        const Spacer(),
-                        SizedBox(
-                            height: height * 0.035,
-                            // width: width * 0.067,
-                            child: RatingBar(
-                                feedbackUIType: FeedbackUIType.bottomSheet,
-                                showFeedbackForRatingsLessThan: 2,
-                                iconSize: 17,
-                                // Size of the rating icons
-                                allowHalfRating: false,
-                                // Allows selection of half ratings
-                                filledIcon: Icons.star,
-                                // Icon to display for a filled rating unit
-                                emptyIcon: Icons.star_border,
-                                // Icon to display for an empty rating units
-                                filledColor:
-                                    Theme.of(context).colorScheme.primary,
-                                // Color of filled rating units
-                                emptyColor: Colors.grey,
-                                // Color of empty rating units
-                                currentRating: _rating,
-                                onRatingChanged: (changedRating) {})),
-                        Text(
-                          '($_totalReviews)',
-                          style: GoogleFonts.abel(
-                              textStyle: TextStyle(
-                                  overflow: TextOverflow.visible,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  fontSize: 30.rt,
-                                  fontWeight: FontWeight.w500)),
-                        ),
-                      ],
-                    ),
-                  ),
-                  4.verticalSpace,
-                  InkWell(
-                    onTap: () {
-                      showReviewDialog(context, user);
-                    },
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        "Write a review?",
-                        // textAlign: TextAlign.right,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                5.verticalSpace,
+                Container(
+                  // margin: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Theme.of(context).colorScheme.primaryContainer),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      _uiComponents.headline3('Total Rating'),
+                      const Spacer(),
+                      SizedBox(
+                          height: height * 0.035,
+                          // width: width * 0.067,
+                          child: RatingBar(
+                              feedbackUIType: FeedbackUIType.bottomSheet,
+                              showFeedbackForRatingsLessThan: 2,
+                              iconSize: 17,
+                              // Size of the rating icons
+                              allowHalfRating: false,
+                              // Allows selection of half ratings
+                              filledIcon: Icons.star,
+                              // Icon to display for a filled rating unit
+                              emptyIcon: Icons.star_border,
+                              // Icon to display for an empty rating units
+                              filledColor:
+                                  Theme.of(context).colorScheme.primary,
+                              // Color of filled rating units
+                              emptyColor: Colors.grey,
+                              // Color of empty rating units
+                              currentRating: _rating,
+                              onRatingChanged: (changedRating) {})),
+                      Text(
+                        '($_totalReviews)',
                         style: GoogleFonts.abel(
-                          textStyle: TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              color: Colors.blue.shade900,
-                              fontSize: 30.rt,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline),
-                        ),
+                            textStyle: TextStyle(
+                                overflow: TextOverflow.visible,
+                                color:
+                                    Theme.of(context).colorScheme.secondary,
+                                fontSize: 30.rt,
+                                fontWeight: FontWeight.w500)),
+                      ),
+                    ],
+                  ),
+                ),
+                4.verticalSpace,
+                InkWell(
+                  onTap: () {
+                    showReviewDialog(context, user);
+                  },
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      "Write a review?",
+                      // textAlign: TextAlign.right,
+                      style: GoogleFonts.abel(
+                        textStyle: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            color: Colors.blue.shade900,
+                            fontSize: 30.rt,
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline),
                       ),
                     ),
                   ),
-                  _uiComponents.headline3('All reviews'),
-                  Divider(
-                    thickness: 0.4,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  ListView.builder(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      shrinkWrap: true,
-                      itemCount: 1,
-                      itemBuilder: (context, index) {
-                        ReviewModel review = reviews![index];
-                        return Container(
-                          // height: height * 0.15,
-                          width: width * 1,
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey.withOpacity(0.1)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
+                ),
+                _uiComponents.headline3('All reviews'),
+                Divider(
+                  thickness: 0.4,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              StreamBuilder(
+                  stream: _reviewServices.getReviews(widget.contractorId),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: SpinKitCircle(
+                          size: 30,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      );
+                    }
+
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: _uiComponents.normalText(snapshot.error.toString()),
+                      );
+                    }
+
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'images/feedback.png',
+                              fit: BoxFit.fill,
+                              height: height * 0.25,
+                              width: width * 0.5,
+                            ),
+                            15.verticalSpace,
+                            NormalMaterialButton(
+                                text: 'Be a first person to write a review',
+                                onPressed: () {
+                                  showReviewDialog(context, user);
+                                }),
+                          ],
+                        ),
+                      );
+                    }
+                    List<ReviewModel>? reviews = snapshot.data;
+                    return Expanded(
+                      child: ListView.builder(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: reviews!.length,
+                          itemBuilder: (context, index) {
+                            ReviewModel review = reviews[index];
+                            return Container(
+                              // height: height * 0.15,
+                              width: width * 1,
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.only(top: 8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Theme.of(context).colorScheme.primaryContainer),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ReusableIconButton(
-                                      radius: 15,
-                                      icon: Icons.person,
-                                      iconColor: Colors.black,
-                                      iconSize: 15,
-                                      onPressed: () {}),
-                                  20.horizontalSpace,
-                                  _uiComponents.headline3(review.userName),
-                                  const Spacer(),
-                                  SizedBox(
-                                      height: height * 0.035,
-                                      // width: width * 0.067,
-                                      child: RatingBar(
-                                        feedbackUIType:
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      ReusableIconButton(
+                                          radius: 15,
+                                          icon: Icons.person,
+                                          iconColor: Colors.black,
+                                          iconSize: 15,
+                                          onPressed: () {}),
+                                      20.horizontalSpace,
+                                      _uiComponents.headline3(review.userName),
+                                      const Spacer(),
+                                      SizedBox(
+                                          height: height * 0.035,
+                                          // width: width * 0.067,
+                                          child: RatingBar(
+                                            feedbackUIType:
                                             FeedbackUIType.bottomSheet,
-                                        showFeedbackForRatingsLessThan: 2,
-                                        iconSize: 17,
-                                        // Size of the rating icons
-                                        allowHalfRating: false,
-                                        // Allows selection of half ratings
-                                        filledIcon: Icons.star,
-                                        // Icon to display for a filled rating unit
-                                        emptyIcon: Icons.star_border,
-                                        // Icon to display for an empty rating units
-                                        filledColor: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        // Color of filled rating units
-                                        emptyColor: Colors.grey,
-                                        // Color of empty rating units
-                                        currentRating: review.rating,
-                                        onRatingChanged: (double value) {},
-                                      )),
+                                            showFeedbackForRatingsLessThan: 2,
+                                            iconSize: 17,
+                                            // Size of the rating icons
+                                            allowHalfRating: false,
+                                            // Allows selection of half ratings
+                                            filledIcon: Icons.star,
+                                            // Icon to display for a filled rating unit
+                                            emptyIcon: Icons.star_border,
+                                            // Icon to display for an empty rating units
+                                            filledColor: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            // Color of filled rating units
+                                            emptyColor: Colors.grey,
+                                            // Color of empty rating units
+                                            currentRating: review.rating,
+                                            onRatingChanged: (double value) {},
+                                          )),
+                                    ],
+                                  ),
+                                  Divider(
+                                    thickness: 0.4,
+                                    color: Theme.of(context).colorScheme.primary,
+                                  ),
+                                  _uiComponents.normalText(review.reviewText),
+                                  Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Text(
+                                      "${review.reviewDate.day}/${review.reviewDate.month}/${review.reviewDate.year}",
+                                      style: GoogleFonts.abel(
+                                        textStyle: TextStyle(
+                                            overflow: TextOverflow.visible,
+                                            color: Theme.of(context).colorScheme.secondary,
+                                            fontSize: 30.rt,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  )
                                 ],
                               ),
-                              Divider(
-                                thickness: 0.4,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              Text(
-                                review.reviewText,
-                                textAlign: TextAlign.start,
-                                // maxLines: 4,
-                                style: GoogleFonts.abel(
-                                  textStyle: TextStyle(
-                                      overflow: TextOverflow.visible,
-                                      fontSize: 30.rt,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: _uiComponents.normalText(
-                                    "Published:${review.reviewDate.day}/${review.reviewDate.month}/${review.reviewDate.year}"),
-                              )
-                            ],
-                          ),
-                        );
-                      })
-                ],
-              ),
+                            );
+                          }),
+                    );
+                  })
+              ],
             ),
           );
-        });
+
   }
 
   Future<dynamic> showReviewDialog(BuildContext context, UserModel? user) {

@@ -1,6 +1,7 @@
 import 'package:contrador/components/ui_components.dart';
 import 'package:contrador/models/favourite_model.dart';
 import 'package:contrador/services/contractor_services.dart';
+import 'package:contrador/services/review_services.dart';
 import 'package:contrador/view/details/service_details_page.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
@@ -26,13 +27,16 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   final UiComponents _uiComponents = UiComponents();
   final ContractorServices _contractorServices = ContractorServices();
-  double currentRating = 4.0;
+  final ReviewServices _reviewServices = ReviewServices();
+  // double _currentRating = 4.0;
   String _categoryName = 'all';
+
+
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.sizeOf(context).height;
-    final favourite = Provider.of<FavouriteProvider>(context,listen: true);
+    // final favourite = Provider.of<FavouriteProvider>(context,listen: true);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -227,28 +231,22 @@ class _CategoryPageState extends State<CategoryPage> {
                                                 fontWeight: FontWeight.w500)),
                                       )
                                     ])),
-                                    SizedBox(
-                                        height: height * 0.035,
-                                        // width: width * 0.067,
-                                        child: RatingBar(
-                                            iconSize: 20,
-                                            // Size of the rating icons
-                                            allowHalfRating: false,
-                                            // Allows selection of half ratings
-                                            filledIcon: Icons.star,
-                                            // Icon to display for a filled rating unit
-                                            emptyIcon: Icons.star_border,
-                                            // Icon to display for an empty rating units
-                                            filledColor: Colors.amber,
-                                            // Color of filled rating units
-                                            emptyColor: Colors.grey,
-                                            // Color of empty rating units
-                                            currentRating: contractor.rating,
-                                            onRatingChanged:
-                                                (changedRating) {})),
-                                    const Spacer(),
+                                    2.verticalSpace,
                                     _uiComponents
-                                        .normalText("📍${contractor.address}")
+                                        .normalText("📍${contractor.address}"),
+                                    const Spacer(),
+                                    Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Text(
+                                        "[More Info]",
+                                        style: GoogleFonts.abel(
+                                            textStyle: TextStyle(
+                                                overflow: TextOverflow.visible,
+                                                fontSize: 30.rt,
+                                                color: Colors.blue.shade900,
+                                                fontWeight: FontWeight.w600)),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),

@@ -17,10 +17,11 @@ class ReviewServices {
   }
 
   Stream<List<ReviewModel>> getReviews (String contractorId) {
-    return _firestore
+    final snapshots = _firestore
         .collection('contractors')
         .doc(contractorId)
-        .collection('reviews').snapshots().map((snapshot){
+        .collection('reviews').snapshots();
+    return snapshots.map((snapshot){
           return snapshot.docs.map((doc)=> ReviewModel.fromJson(doc.data())).toList();
     });
   }
@@ -42,14 +43,14 @@ class ReviewServices {
         double newRating = totalRating/ratingCount;
         print(newRating);
 
-        await _firestore.collection('contractor').doc(contractorId).get().then((snapshot) async {
+        await _firestore.collection('contractors').doc(contractorId).get().then((snapshot) async {
           if(snapshot.exists){
-            await _firestore.collection('contractor').doc(contractorId).update({
+            await _firestore.collection('contractors').doc(contractorId).update({
               "rating" : newRating,
               "totalRatings" : ratingCount,
             });
           } else{
-            await _firestore.collection('contractor').doc(contractorId).set({
+            await _firestore.collection('contractors').doc(contractorId).set({
               "rating" : newRating,
               "totalRatings" : ratingCount,
             });

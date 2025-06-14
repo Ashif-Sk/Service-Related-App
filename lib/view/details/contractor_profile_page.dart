@@ -95,7 +95,7 @@ class _ContractorProfilePageState extends State<ContractorProfilePage>
                                 : NetworkImage(
                                 widget.contractor!.profileImage),
                             fit: BoxFit.contain),
-                        border: Border.all(color: Colors.white, width: 2),
+                        border: Border.all(color: Colors.white, width: 1.5),
                         shape: BoxShape.circle,
                         color: Colors.grey.withOpacity(0.35)),
                   ),
