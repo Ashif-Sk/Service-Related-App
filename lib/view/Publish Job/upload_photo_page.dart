@@ -23,7 +23,7 @@ class _UploadPhotoPageState extends State<UploadPhotoPage> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Theme.of(context).colorScheme.tertiary,
-          title: _uiComponents.headline2('Upload Images'),
+          title: _uiComponents.headline2('Upload Images',Theme.of(context).colorScheme.tertiary),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),

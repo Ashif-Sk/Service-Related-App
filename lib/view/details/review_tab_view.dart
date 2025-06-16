@@ -33,6 +33,7 @@ class _ReviewTabViewState extends State<ReviewTabView> {
   double _selectedRating = 4;
   double _rating = 0;
   int _totalReviews = 0;
+  bool _isHasData = true;
 
   Future<void> loadRatingData(String contractorId) async {
     Map<String, dynamic>? ratingData = await _reviewServices.getRatingData(contractorId);
@@ -40,7 +41,11 @@ class _ReviewTabViewState extends State<ReviewTabView> {
     if (ratingData != null) {
       setState(() {
         _rating = ratingData['rating'] ?? 0.0;
-        _totalReviews = ratingData['totalRatings'] ?? "";
+        _totalReviews = ratingData['totalRatings'] ?? 0;
+      });
+    } else{
+      setState(() {
+        _isHasData = false;
       });
     }
   }
@@ -65,8 +70,8 @@ class _ReviewTabViewState extends State<ReviewTabView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                5.verticalSpace,
-                Container(
+                _isHasData?5.verticalSpace: Container(),
+                _isHasData?Container(
                   // margin: const EdgeInsets.symmetric(horizontal: 10),
                   padding: const EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
@@ -110,9 +115,9 @@ class _ReviewTabViewState extends State<ReviewTabView> {
                       ),
                     ],
                   ),
-                ),
-                4.verticalSpace,
-                InkWell(
+                ):Container(),
+                _isHasData?4.verticalSpace:Container(),
+                _isHasData?InkWell(
                   onTap: () {
                     showReviewDialog(context, user);
                   },
@@ -131,21 +136,18 @@ class _ReviewTabViewState extends State<ReviewTabView> {
                       ),
                     ),
                   ),
-                ),
-                _uiComponents.headline3('All reviews'),
-                Divider(
+                ):Container(),
+                _isHasData?_uiComponents.headline3('All reviews'):Container(),
+                _isHasData?Divider(
                   thickness: 0.4,
                   color: Theme.of(context).colorScheme.primary,
-                ),
+                ):Container(),
               StreamBuilder(
                   stream: _reviewServices.getReviews(widget.contractorId),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
-                        child: SpinKitCircle(
-                          size: 30,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
+                        child: _uiComponents.loading()
                       );
                     }
 
@@ -156,19 +158,19 @@ class _ReviewTabViewState extends State<ReviewTabView> {
                     }
 
                     if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      return Flexible(
+                        fit: FlexFit.loose,
+                        child: ListView(
                           children: [
                             Image.asset(
                               'images/feedback.png',
-                              fit: BoxFit.fill,
+                              fit: BoxFit.contain,
                               height: height * 0.25,
-                              width: width * 0.5,
+                              width: width * 0.45,
                             ),
                             15.verticalSpace,
                             NormalMaterialButton(
-                                text: 'Be a first person to write a review',
+                                text: 'Share your thoughts',
                                 onPressed: () {
                                   showReviewDialog(context, user);
                                 }),
@@ -272,7 +274,7 @@ class _ReviewTabViewState extends State<ReviewTabView> {
           return StatefulBuilder(builder: (context, StateSetter setState) {
             return AlertDialog(
               backgroundColor: Theme.of(context).colorScheme.tertiary,
-              title: _uiComponents.headline2('Rate & Review'),
+              title: _uiComponents.headline2('Rate & Review',Theme.of(context).colorScheme.secondary),
               alignment: Alignment.center,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5)),

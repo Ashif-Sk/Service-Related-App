@@ -41,13 +41,14 @@ class _CategoryPageState extends State<CategoryPage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: _uiComponents.headline2(widget.appBarTitle),
+        title: _uiComponents.headline2(widget.appBarTitle,Theme.of(context).colorScheme.tertiary),
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             8.verticalSpace,
             SizedBox(
@@ -83,7 +84,7 @@ class _CategoryPageState extends State<CategoryPage> {
                               widget.subCategoryList[index].toString(),
                               style: GoogleFonts.abel(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 30.rt,
+                                fontSize: 14,
                                 color: _categoryName ==
                                         widget.subCategoryList[index]
                                             .toLowerCase()
@@ -104,10 +105,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
-                      child: SpinKitCircle(
-                        size: 30,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                      child: _uiComponents.loading()
                     );
                   } else if (snapshot.hasError) {
                     return Center(
@@ -203,7 +201,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .secondary,
-                                            fontSize: 35.rt,
+                                            fontSize: 16,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -215,7 +213,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                         style: GoogleFonts.abel(
                                             textStyle: TextStyle(
                                                 overflow: TextOverflow.visible,
-                                                fontSize: 30.rt,
+                                                fontSize: 14,
                                                 color: Colors.blue.shade900,
                                                 fontWeight: FontWeight.w600)),
                                       ),
@@ -227,7 +225,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .secondary,
-                                                fontSize: 30.rt,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.w500)),
                                       )
                                     ])),
@@ -242,7 +240,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                         style: GoogleFonts.abel(
                                             textStyle: TextStyle(
                                                 overflow: TextOverflow.visible,
-                                                fontSize: 30.rt,
+                                                fontSize: 14,
                                                 color: Colors.blue.shade900,
                                                 fontWeight: FontWeight.w600)),
                                       ),

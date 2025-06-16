@@ -32,17 +32,14 @@ class _ChatHomePageState extends State<ChatHomePage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: _uiComponents.headline2("Messages"),
+        title: _uiComponents.headline2("Messages",Theme.of(context).colorScheme.tertiary),
       ),
       body: FutureBuilder<List<ChatRoomModel>>(
         future: _chatServices.getUserChatRooms(_userId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: SpinKitCircle(
-                size: 30,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+              child: _uiComponents.loading()
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {

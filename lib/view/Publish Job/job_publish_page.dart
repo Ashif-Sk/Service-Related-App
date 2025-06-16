@@ -143,7 +143,7 @@ class _JobPublishPageState extends State<JobPublishPage> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Theme.of(context).colorScheme.tertiary,
-          title: _uiComponents.headline2(widget.categoryName),
+          title: _uiComponents.headline2(widget.categoryName,Theme.of(context).colorScheme.tertiary),
         ),
         body: Form(
           key: _formKey,

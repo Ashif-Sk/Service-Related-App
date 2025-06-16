@@ -64,9 +64,10 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: _uiComponents.headline2(receiverName),
+        title: _uiComponents.headline2(receiverName,Theme.of(context).colorScheme.tertiary),
         actions: [
           PopupMenuButton<int>(
+            iconColor: Theme.of(context).colorScheme.tertiary,
             color: Theme.of(context).colorScheme.tertiary,
             itemBuilder: (context) => [
               PopupMenuItem(
@@ -114,13 +115,13 @@ class _ChatPageState extends State<ChatPage> {
           StreamBuilder<QuerySnapshot>(
               stream: _chatServices.getMessages(widget.chatRoomId),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
-                    child: SpinKitCircle(
-                      size: 30,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
+                      child: _uiComponents.loading()
                   );
+                }
+                if (!snapshot.hasData) {
+                  return const Center(child: Text("No chats yet"));
                 }
                 List<DocumentSnapshot> messages = snapshot.data!.docs;
                 return Expanded(
@@ -137,27 +138,8 @@ class _ChatPageState extends State<ChatPage> {
                   itemBuilder: (context, index) {
                     MessageModel message = MessageModel.fromJson(
                         messages[index].data() as Map<String, dynamic>);
-                    return Row(
-                      children: [
-                        Expanded(
-                            child: _selectedIndex == index
-                                ? ReusableIconButton(
-                                    radius: 20,
-                                    icon: Icons.delete,
-                                    iconColor: Colors.red,
-                                    iconSize: 20,
-                                    onPressed: () {
-                                      messages.removeAt(index);
-                                      toggleDeleteIcon(null);
-                                    })
-                                : Container()),
-                        InkWell(
-                            onLongPress: () => toggleDeleteIcon(index),
-                            onTap: () => toggleDeleteIcon(index),
-                            child: ChatBubble(
-                              message: message,
-                            ))
-                      ],
+                    return ChatBubble(
+                      message: message,
                     );
                   },
                 ));
@@ -175,8 +157,8 @@ class _ChatPageState extends State<ChatPage> {
                     decoration: InputDecoration(
                         hintText: 'Type your message',
                         hintStyle: GoogleFonts.abel(
-                            textStyle: TextStyle(
-                                fontSize: 35.rt, fontWeight: FontWeight.w500)),
+                            textStyle: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500)),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5))),
                     keyboardType: TextInputType.multiline,

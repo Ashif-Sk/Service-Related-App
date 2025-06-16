@@ -126,18 +126,18 @@ class _HomePageState extends State<HomePage> {
                       ],
                     )),
                 Positioned(
-                  bottom: 30,
+                  bottom: 80,
                   left: 5,
                   child: Image.asset(
-                    "images/hammer-unscreen.gif",
+                    "images/drill-unscreen.gif",
                     // color: Colors.white,
                     height: 100,
                   ),),
                 Positioned(
-                  bottom: 40,
+                  bottom: 80,
                   right: 5,
                   child: Image.asset(
-                    "images/helmet-unscreen.gif",
+                    "images/hammer-unscreen.gif",
                     // color: Colors.white,
                     height: 100,
                   ),),
@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Align(
                 alignment: Alignment.centerLeft,
-                child: _uiComponents.headline2('Services')),
+                child: _uiComponents.headline2('Services',Theme.of(context).colorScheme.secondary)),
           ),
           Divider(
             thickness: 0.4,

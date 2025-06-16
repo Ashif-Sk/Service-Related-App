@@ -52,7 +52,8 @@ class _SplashPageState extends State<SplashPage> {
             Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: uiComponents.headline2(
-                    "'Find Home services,Construction,Automotive,Transportation,Tech & Repairs and Personal services'")),
+                    "'Find Home services,Construction,Automotive,Transportation,Tech & Repairs and Personal services'",
+                    Theme.of(context).colorScheme.secondary)),
             const Spacer(),
             GestureDetector(
               onTap: () {

@@ -50,7 +50,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: _uiComponents
-            .headline2(widget.contractor.subcategory.toUpperCase()),
+            .headline2(widget.contractor.subcategory.toUpperCase(),Theme.of(context).colorScheme.tertiary),
       ),
       body: Column(
         children: [
@@ -111,7 +111,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                               textStyle: TextStyle(
                                 overflow: TextOverflow.ellipsis,
                                 color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 24,
+                                fontSize: 22,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -122,7 +122,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                               style: GoogleFonts.abel(
                                   textStyle: TextStyle(
                                       overflow: TextOverflow.visible,
-                                      fontSize: 35.rt,
+                                      fontSize: 16,
                                       color: Colors.blue.shade900,
                                       fontWeight: FontWeight.w600)),
                             ),
@@ -134,7 +134,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                                         color: Theme.of(context)
                                             .colorScheme
                                             .secondary,
-                                        fontSize: 35.rt,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.w500)))
                           ])),
                           _uiComponents
@@ -152,7 +152,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                                     overflow: TextOverflow.visible,
                                     color:
                                         Theme.of(context).colorScheme.secondary,
-                                    fontSize: 25.rt,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500)),
                           ),
                           ReusableIconButton(
@@ -226,7 +226,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                           textStyle: TextStyle(
                         overflow: TextOverflow.visible,
                         color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 31.rt,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                       )),
                     ),
@@ -239,7 +239,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                 Container(
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.only(left: 10),
-                    child: _uiComponents.headline2('Details')),
+                    child: _uiComponents.headline2('Details',Theme.of(context).colorScheme.secondary)),
                 4.verticalSpace,
                 //subcategory,experience,options
                 Container(
@@ -294,7 +294,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                                     overflow: TextOverflow.visible,
                                     color:
                                         Theme.of(context).colorScheme.secondary,
-                                    fontSize: 30.rt,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500)),
                           ),
                         ],
@@ -310,7 +310,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                 Container(
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.only(left: 10),
-                    child: _uiComponents.headline2('Description')),
+                    child: _uiComponents.headline2('Description',Theme.of(context).colorScheme.secondary)),
                 4.verticalSpace,
                 Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -321,9 +321,10 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                     child: Text(widget.contractor.description,
                         textAlign: TextAlign.start,
                         style: GoogleFonts.abel(
-                            textStyle: TextStyle(
+                            textStyle:  TextStyle(
                                 overflow: TextOverflow.visible,
-                                fontSize: 30.rt,
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w600)))),
                 4.verticalSpace,
                 Divider(

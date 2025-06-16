@@ -16,7 +16,7 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: _uiComponents.headline2('Settings'),
+        title: _uiComponents.headline2('Settings',Theme.of(context).colorScheme.tertiary),
       ),
     );
   }

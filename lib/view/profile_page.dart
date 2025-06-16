@@ -35,10 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final user = Provider.of<UserProvider>(context,listen: true);
     if(user.userData == null){
       return Center(
-        child: SpinKitCircle(
-          size: 30,
-          color: Theme.of(context).colorScheme.primary,
-        ),
+        child: _uiComponents.loading()
       );
     }
     return SafeArea(
@@ -73,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: Colors.grey),
             ),
             4.verticalSpace,
-            user.userData != null ? _uiComponents.headline2(user.userData!.name):SpinKitCircle(
+            user.userData != null ? _uiComponents.headline2(user.userData!.name,Theme.of(context).colorScheme.secondary):SpinKitCircle(
               size: 30,
               color: Theme.of(context).colorScheme.primary,
             ),

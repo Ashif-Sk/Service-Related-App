@@ -27,10 +27,7 @@ class _ServicesTabViewState extends State<ServicesTabView> {
         builder: (context,snapshot){
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: SpinKitCircle(
-                size: 30,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+              child: _uiComponents.loading()
             );
           }
 
@@ -73,58 +70,68 @@ class _ServicesTabViewState extends State<ServicesTabView> {
                           const SizedBox(
                             width: 8,
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              5.verticalSpace,
-                              Text(
-                                service.businessName,
-                                style: GoogleFonts.abel(
-                                  textStyle: TextStyle(
-                                    overflow: TextOverflow.ellipsis,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .secondary,
-                                    fontSize: 35.rt,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Text.rich(TextSpan(children: [
-                                TextSpan(
-                                  text: "Rs ${service.cost}",
-                                  style: GoogleFonts.abel(
+                          FittedBox(
+                            fit: BoxFit.fill,
+                            child: SizedBox(
+                              height: height * 0.130,
+                              // width: double.maxFinite,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  5.verticalSpace,
+                                  Text(
+                                    service.businessName,
+                                    textScaler: const TextScaler.linear(1.0),
+                                    style: GoogleFonts.abel(
                                       textStyle: TextStyle(
-                                          overflow: TextOverflow.visible,
-                                          fontSize: 30.rt,
-                                          color: Colors.blue.shade900,
-                                          fontWeight: FontWeight.w600)),
-                                ),
-                                TextSpan(
-                                    text: "/${service.pricingModel}",
+                                        overflow: TextOverflow.ellipsis,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Text.rich(textScaler: const TextScaler.linear(1.0),
+                                      TextSpan(children: [
+                                    TextSpan(
+                                      text: "Rs ${service.cost}",
+                                      style: GoogleFonts.abel(
+                                          textStyle: TextStyle(
+                                              overflow: TextOverflow.visible,
+                                              fontSize: 16,
+                                              color: Colors.blue.shade900,
+                                              fontWeight: FontWeight.w600)),
+                                    ),
+                                    TextSpan(
+                                        text: "/${service.pricingModel}",
+                                        style: GoogleFonts.abel(
+                                            textStyle: TextStyle(
+                                                overflow: TextOverflow.visible,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500)))
+                                  ])),
+                                  const Spacer(),
+                                  Text(
+                                    'Published:${service.timeStamp.day}/${service.timeStamp.month}/${service.timeStamp.year}',
+                                    textScaler: const TextScaler.linear(1.0),
                                     style: GoogleFonts.abel(
                                         textStyle: TextStyle(
                                             overflow: TextOverflow.visible,
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .secondary,
-                                            fontSize: 30.rt,
-                                            fontWeight: FontWeight.w500)))
-                              ])),
-                              const Spacer(),
-                              Text(
-                                'Published:${service.timeStamp.day}/${service.timeStamp.month}/${service.timeStamp.year}',
-                                style: GoogleFonts.abel(
-                                    textStyle: TextStyle(
-                                        overflow: TextOverflow.visible,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        fontSize: 25.rt,
-                                        fontWeight: FontWeight.w500)),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500)),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ],
                       ),

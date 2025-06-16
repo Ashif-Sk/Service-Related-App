@@ -27,7 +27,7 @@ class _WishlistPageState extends State<WishlistPage> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Theme.of(context).colorScheme.primary,
-          title: _uiComponents.headline2('Wishlist'),
+          title: _uiComponents.headline2('Wishlist',Theme.of(context).colorScheme.tertiary),
         ),
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: Consumer<FavouriteProvider>(

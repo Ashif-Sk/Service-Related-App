@@ -39,7 +39,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
            const BigImage(imagePath: 'images/reset-password.png'),
           const SizedBox(height: 40,),
            Divider(thickness: 0.3,color: Theme.of(context).colorScheme.secondary),
-          _uiComponents.headline2('Enter your email and we will send you password reset link'),
+          _uiComponents.headline2('Enter your email and we will send you password reset link',Theme.of(context).colorScheme.secondary),
            Divider(thickness: 0.3,color: Theme.of(context).colorScheme.secondary,),
           const SizedBox(height: 30,),
           TextFormField(

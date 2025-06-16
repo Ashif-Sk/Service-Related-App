@@ -4,7 +4,6 @@ import 'package:contrador/view/Publish%20Job/category_selection_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../models/contractor_model.dart';
@@ -29,7 +28,7 @@ class _MyServicesPageState extends State<MyServicesPage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: _uiComponents.headline2('My services'),
+        title: _uiComponents.headline2('My services',Theme.of(context).colorScheme.tertiary),
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: FutureBuilder(
@@ -37,10 +36,7 @@ class _MyServicesPageState extends State<MyServicesPage> {
           builder: (context,snapshot){
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: SpinKitCircle(
-                  size: 30,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                child: _uiComponents.loading()
               );
             }
 

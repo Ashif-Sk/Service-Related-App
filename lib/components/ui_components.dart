@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class UiComponents {
-  Widget headline2(String text) {
+  Widget headline2(String text,Color color) {
     return Text(text,
         textAlign: TextAlign.center,
         style: GoogleFonts.abel(
-            textStyle:  const TextStyle(
+            textStyle:   TextStyle(
                 overflow: TextOverflow.visible,
+                color: color,
                 fontSize: 20,
                 fontWeight: FontWeight.w600)));
   }
@@ -17,9 +18,9 @@ class UiComponents {
     return Text(text,
         // textAlign: TextAlign.left,
         style: GoogleFonts.abel(
-            textStyle: TextStyle(
+            textStyle: const TextStyle(
                 overflow: TextOverflow.visible,
-                fontSize: 35.rt,
+                fontSize: 16,
                 fontWeight: FontWeight.w600)));
   }
 
@@ -27,9 +28,9 @@ class UiComponents {
     return Text(text,
         textAlign: TextAlign.start,
         style: GoogleFonts.abel(
-            textStyle: TextStyle(
+            textStyle: const TextStyle(
                 overflow: TextOverflow.ellipsis,
-                fontSize: 30.rt,
+                fontSize: 14,
                 fontWeight: FontWeight.w600)));
   }
 
@@ -61,11 +62,11 @@ class UiComponents {
                   message,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.abel(
-                      textStyle: TextStyle(
+                      textStyle:  TextStyle(
                           overflow: TextOverflow.visible,
-                          fontSize: 32.rt,
+                          fontSize: 14,
                           fontWeight: FontWeight.w700,
-                          color: Colors.black)),
+                          color: Theme.of(context).colorScheme.secondary)),
                 ),
               ],
             ),
@@ -123,7 +124,7 @@ class UiComponents {
                   style: GoogleFonts.aclonica(
                     textStyle: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
-                        fontSize: 28.rt),
+                        fontSize: 14),
                   ),
                 ),
               ),
@@ -134,7 +135,7 @@ class UiComponents {
                   style: GoogleFonts.aclonica(
                     textStyle: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
-                        fontSize: 28.rt),
+                        fontSize: 14),
                   ),
                 ),
               ),
@@ -236,6 +237,14 @@ class UiComponents {
             ],
           );
         });
+  }
+
+  Widget loading(){
+    return Image.asset(
+      "images/helmet-unscreen.gif",
+      // color: Colors.white,
+      height: 90,
+    );
   }
 }
 
@@ -402,7 +411,7 @@ class ReusableListTile extends StatelessWidget {
               textStyle: TextStyle(
             overflow: TextOverflow.visible,
             color: Theme.of(context).colorScheme.secondary,
-            fontSize: 35.rt,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
           ))),
       trailing: Icon(
@@ -615,7 +624,7 @@ class _ReportFormState extends State<ReportForm> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _uiComponents.headline2('Report?'),
+              _uiComponents.headline2('Report?',Theme.of(context).colorScheme.secondary),
               IconButton(onPressed: (){Flexify.back();}, icon: const Icon(Icons.close_rounded))
             ],
           ),
@@ -702,7 +711,7 @@ class ReusableDetailsRow extends StatelessWidget {
             textStyle: TextStyle(
                 overflow: TextOverflow.visible,
                 color: Theme.of(context).colorScheme.secondary,
-                fontSize: 30.rt,
+                fontSize: 14,
                 fontWeight: FontWeight.w500),
           ),
         ),

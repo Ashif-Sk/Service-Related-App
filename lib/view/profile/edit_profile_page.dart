@@ -132,7 +132,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Theme.of(context).colorScheme.primary,
-          title: _uiComponents.headline2('Edit Profile'),
+          title: _uiComponents.headline2('Edit Profile',Theme.of(context).colorScheme.tertiary),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -310,7 +310,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     style: GoogleFonts.abel(
                         textStyle: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
-                            fontSize: 35.rt,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold)),
                     dropdownColor: Theme.of(context).colorScheme.tertiary,
                     decoration: InputDecoration(
