@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ContractorModel {
   final String contractorId;
   final String serviceId;
@@ -61,7 +63,7 @@ class ContractorModel {
       "imagePaths": imagePaths,
       "rating": rating,
       "totalRatings": totalRatings,
-      "timeStamp": timeStamp.toString(),
+      "timeStamp": Timestamp.fromDate(timeStamp),
     };
   }
 
@@ -85,7 +87,9 @@ class ContractorModel {
       imagePaths: List<String>.from(json["imagePaths"]),
       rating: json["rating"],
       totalRatings: json["totalRatings"],
-      timeStamp: DateTime.parse(json["timeStamp"]),
+      timeStamp: json['timeStamp'] is Timestamp
+          ? (json['timeStamp'] as Timestamp).toDate()  // Convert Timestamp to DateTime
+          : DateTime.now(),
     );
   }
 }

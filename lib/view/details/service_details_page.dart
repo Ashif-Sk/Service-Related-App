@@ -327,6 +327,46 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600)))),
                 4.verticalSpace,
+
+                Divider(
+                  thickness: 0.4,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+
+                4.verticalSpace,
+
+                Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.all(15.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Theme.of(context).colorScheme.primaryContainer),
+                    child:Text.rich(
+                        TextSpan(children: [
+                      TextSpan(
+                        text: "Disclaimer: ",
+                        style: GoogleFonts.abel(
+                            textStyle: const TextStyle(
+                                overflow: TextOverflow.visible,
+                                fontSize: 14,
+                                color: Colors.red,
+                                fontWeight: FontWeight.w600)),
+                      ),
+                      TextSpan(
+                          text:"Please note that Contrador only connects users with service providers. We do not verify the authenticity of service providers or their services. Please proceed with caution and good judgement.",
+                          style: GoogleFonts.abel(
+                              textStyle: TextStyle(
+                                  overflow: TextOverflow.visible,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .secondary,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500)))
+                    ])),
+                ),
+
+                4.verticalSpace,
+
                 Divider(
                   thickness: 0.4,
                   color: Theme.of(context).colorScheme.primary,

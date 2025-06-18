@@ -6,7 +6,6 @@ import 'package:contrador/view/details/contractor_profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ChatPage extends StatefulWidget {
@@ -24,7 +23,6 @@ class _ChatPageState extends State<ChatPage> {
   final UiComponents _uiComponents = UiComponents();
   final ChatServices _chatServices = ChatServices();
   final TextEditingController _messageController = TextEditingController();
-  int? _selectedIndex;
   String chatRoomId = '';
   String currentUserId = FirebaseAuth.instance.currentUser!.uid;
   String receiverName = '';
@@ -36,7 +34,6 @@ class _ChatPageState extends State<ChatPage> {
         .collection('users')
         .doc(widget.receiverId)
         .get();
-    print(data);
 
     setState(() {
       receiverName = data['name'] ?? 'User';
@@ -44,11 +41,6 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void toggleDeleteIcon(int? index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   void initState() {
@@ -110,6 +102,7 @@ class _ChatPageState extends State<ChatPage> {
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           10.verticalSpace,
           StreamBuilder<QuerySnapshot>(
@@ -120,8 +113,46 @@ class _ChatPageState extends State<ChatPage> {
                       child: _uiComponents.loading()
                   );
                 }
-                if (!snapshot.hasData) {
-                  return const Center(child: Text("No chats yet"));
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+
+                  return Center(
+                    child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 15),
+                        padding: const EdgeInsets.all(15.0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Theme.of(context).colorScheme.primaryContainer),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "images/alert-unscreen.gif",
+                              // color: Colors.white,
+                              height: 100,
+                            ),
+                            5.verticalSpace,
+                            Text("Disclaimer",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.abel(
+                                  textStyle: const TextStyle(
+                                      overflow: TextOverflow.visible,
+                                      fontSize: 16,
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w600)),
+                            ),
+                            2.verticalSpace,
+                            Text("1. 🔑 Do not share OTP/PIN, click on unsafe links, or scan any QR codes.\n2. ⚠️ Report suspicious activity/profile.\n3. 🛡️ Don't share personal details like IDs.\n4. 💲 Avoid advance payments.\n5. ❗ Be cautious during meetings.",
+                              style: GoogleFonts.abel(
+                                  textStyle:  TextStyle(
+                                      overflow: TextOverflow.visible,
+                                      fontSize: 14,
+                                      color: Theme.of(context).colorScheme.secondary,
+                                      fontWeight: FontWeight.w600)),
+                            ),
+                          ],
+                        ),
+                    ),
+                  );
                 }
                 List<DocumentSnapshot> messages = snapshot.data!.docs;
                 return Expanded(
@@ -144,11 +175,15 @@ class _ChatPageState extends State<ChatPage> {
                   },
                 ));
               }),
+
           Container(
             height: height * 0.08,
             width: width * 1,
             padding: const EdgeInsets.all(8),
-            color: Theme.of(context).colorScheme.tertiary,
+            decoration: BoxDecoration(
+              border:  Border(top: BorderSide(color: Theme.of(context).colorScheme.primary,)),
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
             child: Row(
               children: [
                 Expanded(
@@ -160,7 +195,7 @@ class _ChatPageState extends State<ChatPage> {
                             textStyle: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500)),
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5))),
+                            borderRadius: BorderRadius.circular(30))),
                     keyboardType: TextInputType.multiline,
                   ),
                 ),
@@ -207,14 +242,14 @@ class ChatBubble extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         width: width * 0.7,
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(15),
-              topRight: Radius.circular(15),
-              bottomLeft: Radius.circular(15),
-              bottomRight: Radius.circular(2)),
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(15),
+              topRight: const Radius.circular(15),
+              bottomLeft: message.senderId == _userId?const Radius.circular(15):const Radius.circular(2),
+              bottomRight:message.senderId == _userId?const Radius.circular(2):const Radius.circular(15)),
           color: message.senderId == _userId
               ? Theme.of(context).colorScheme.primary
-              : Theme.of(context).colorScheme.tertiary,
+              : Theme.of(context).colorScheme.primaryContainer,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -226,16 +261,16 @@ class ChatBubble extends StatelessWidget {
                     textStyle: TextStyle(
                         overflow: TextOverflow.visible,
                         fontSize: 15,
-                        color: Theme.of(context).colorScheme.tertiary,
+                        color: Theme.of(context).colorScheme.secondary,
                         fontWeight: FontWeight.w600))),
             Align(
-              alignment: Alignment.centerRight,
+              alignment: Alignment.bottomRight,
               child: Text(
                 "${message.timeStamp.hour}:${message.timeStamp.minute}",
                 style: GoogleFonts.abel(
                     textStyle: TextStyle(
                   overflow: TextOverflow.visible,
-                  color: Theme.of(context).colorScheme.tertiary,
+                  color: Theme.of(context).colorScheme.secondary,
                   fontSize: 12,
                   fontWeight: FontWeight.normal,
                 )),

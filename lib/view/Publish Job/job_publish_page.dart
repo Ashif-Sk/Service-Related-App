@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:contrador/components/ui_components.dart';
 import 'package:contrador/models/contractor_model.dart';
+import 'package:contrador/provider/user_provider.dart';
 import 'package:contrador/services/contractor_services.dart';
 import 'package:contrador/view/Publish%20Job/upload_photo_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +13,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class JobPublishPage extends StatefulWidget {
   final String categoryName;
@@ -138,11 +140,17 @@ class _JobPublishPageState extends State<JobPublishPage> {
   Widget build(BuildContext context) {
     double height = MediaQuery.sizeOf(context).height;
     double width = MediaQuery.sizeOf(context).width;
+    final user = Provider.of<UserProvider>(context,listen: true).userData;
+    if(user != null){
+      nameController.text = user.name;
+      phoneNumberController.text = user.phone;
+      _profileImage = user.imagePath;
+    }
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.tertiary,
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Theme.of(context).colorScheme.tertiary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: _uiComponents.headline2(widget.categoryName,Theme.of(context).colorScheme.tertiary),
         ),
         body: Form(
@@ -150,10 +158,6 @@ class _JobPublishPageState extends State<JobPublishPage> {
           child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             children: [
-              Divider(
-                thickness: 1,
-                color: Theme.of(context).colorScheme.primary,
-              ),
               10.verticalSpace,
               Row(
                 children: [
@@ -198,6 +202,7 @@ class _JobPublishPageState extends State<JobPublishPage> {
               10.verticalSpace,
               TextFormField(
                 controller: nameController,
+                readOnly: true,
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.name,
                 validator: (name){
@@ -209,14 +214,14 @@ class _JobPublishPageState extends State<JobPublishPage> {
                   return null;
                 },
                 decoration: InputDecoration(
-                    hintText: 'change your username',
+                    hintText: 'Change your username',
                     labelText: 'Username*',
                     hintStyle: GoogleFonts.abel(
-                        textStyle: TextStyle(
-                            fontSize: 35.rt, fontWeight: FontWeight.w500)),
+                        textStyle: const TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w500)),
                     labelStyle: GoogleFonts.acme(
-                        textStyle: TextStyle(
-                            fontSize: 36.rt, fontWeight: FontWeight.normal)),
+                        textStyle: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.normal)),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5))),
 
@@ -224,6 +229,7 @@ class _JobPublishPageState extends State<JobPublishPage> {
               8.verticalSpace,
               TextFormField(
                 maxLength: 10,
+                readOnly: true,
                 controller: phoneNumberController,
                 textInputAction: TextInputAction.next,
                 validator: (number){
@@ -235,14 +241,14 @@ class _JobPublishPageState extends State<JobPublishPage> {
                   return null;
                 },
                 decoration: InputDecoration(
-                    hintText: 'enter a valid mobile number',
+                    hintText: 'Enter a valid mobile number',
                     labelText: 'Mobile number*',
                     hintStyle: GoogleFonts.abel(
-                        textStyle: TextStyle(
-                            fontSize: 35.rt, fontWeight: FontWeight.w500)),
+                        textStyle: const TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w500)),
                     labelStyle: GoogleFonts.acme(
-                        textStyle: TextStyle(
-                            fontSize: 36.rt, fontWeight: FontWeight.normal)),
+                        textStyle: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.normal)),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5))),
                 keyboardType: TextInputType.number,
@@ -261,14 +267,14 @@ class _JobPublishPageState extends State<JobPublishPage> {
                 },
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
-                    hintText: 'enter valid business name',
+                    hintText: 'Enter valid business name',
                     labelText: 'Business name*',
                     hintStyle: GoogleFonts.abel(
-                        textStyle: TextStyle(
-                            fontSize: 35.rt, fontWeight: FontWeight.w500)),
+                        textStyle: const TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w500)),
                     labelStyle: GoogleFonts.acme(
-                        textStyle: TextStyle(
-                            fontSize: 36.rt, fontWeight: FontWeight.normal)),
+                        textStyle: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.normal)),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5))),
                 keyboardType: TextInputType.text,
@@ -276,16 +282,16 @@ class _JobPublishPageState extends State<JobPublishPage> {
               3.verticalSpace,
               DropdownButtonFormField(
                   style: GoogleFonts.abel(
-                      textStyle: TextStyle(
+                      textStyle: const TextStyle(
                           color: Colors.black,
-                          fontSize: 35.rt,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold)),
                   dropdownColor: Theme.of(context).colorScheme.tertiary,
                   decoration: InputDecoration(
                       labelText: 'Subcategory*',
                       labelStyle: GoogleFonts.acme(
-                          textStyle: TextStyle(
-                              fontSize: 36.rt, fontWeight: FontWeight.normal)),
+                          textStyle: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.normal)),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5))),
                   value: _subcategoryValue,
@@ -313,14 +319,14 @@ class _JobPublishPageState extends State<JobPublishPage> {
                         return null;
                       },
                       decoration: InputDecoration(
-                          hintText: 'enter estimated cost',
+                          hintText: 'Enter estimated cost',
                           labelText: 'Service cost*',
                           hintStyle: GoogleFonts.abel(
-                              textStyle: TextStyle(
-                                  fontSize: 35.rt, fontWeight: FontWeight.w500)),
+                              textStyle: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w500)),
                           labelStyle: GoogleFonts.acme(
-                              textStyle: TextStyle(
-                                  fontSize: 36.rt,
+                              textStyle: const TextStyle(
+                                  fontSize: 16,
                                   fontWeight: FontWeight.normal)),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5))),
@@ -331,16 +337,16 @@ class _JobPublishPageState extends State<JobPublishPage> {
                   Expanded(
                     child: DropdownButtonFormField(
                         style: GoogleFonts.abel(
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                                 color: Colors.black,
-                                fontSize: 35.rt,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold)),
                         dropdownColor: Theme.of(context).colorScheme.tertiary,
                         decoration: InputDecoration(
                             labelText: 'Per*',
                             labelStyle: GoogleFonts.acme(
-                                textStyle: TextStyle(
-                                    fontSize: 36.rt,
+                                textStyle: const TextStyle(
+                                    fontSize: 16,
                                     fontWeight: FontWeight.normal)),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5))),
@@ -378,11 +384,11 @@ class _JobPublishPageState extends State<JobPublishPage> {
                           hintText: '',
                           labelText: 'Address*',
                           hintStyle: GoogleFonts.abel(
-                              textStyle: TextStyle(
-                                  fontSize: 35.rt, fontWeight: FontWeight.w500)),
+                              textStyle: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w500)),
                           labelStyle: GoogleFonts.acme(
-                              textStyle: TextStyle(
-                                  fontSize: 36.rt,
+                              textStyle: const TextStyle(
+                                  fontSize: 16,
                                   fontWeight: FontWeight.normal)),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5))),
@@ -423,14 +429,14 @@ class _JobPublishPageState extends State<JobPublishPage> {
                         return null;
                       },
                       decoration: InputDecoration(
-                          hintText: 'enter your experience',
+                          hintText: 'Enter your experience',
                           labelText: 'Experience(years)*',
                           hintStyle: GoogleFonts.abel(
-                              textStyle: TextStyle(
-                                  fontSize: 35.rt, fontWeight: FontWeight.w500)),
+                              textStyle: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w500)),
                           labelStyle: GoogleFonts.acme(
-                              textStyle: TextStyle(
-                                  fontSize: 36.rt,
+                              textStyle: const TextStyle(
+                                  fontSize: 16,
                                   fontWeight: FontWeight.normal)),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5))),
@@ -441,16 +447,16 @@ class _JobPublishPageState extends State<JobPublishPage> {
                   Expanded(
                     child: DropdownButtonFormField(
                         style: GoogleFonts.abel(
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                                 color: Colors.black,
-                                fontSize: 35.rt,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold)),
                         dropdownColor: Theme.of(context).colorScheme.tertiary,
                         decoration: InputDecoration(
                             labelText: 'Options*',
                             labelStyle: GoogleFonts.acme(
-                                textStyle: TextStyle(
-                                    fontSize: 36.rt,
+                                textStyle: const TextStyle(
+                                    fontSize: 16,
                                     fontWeight: FontWeight.normal)),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5))),
@@ -482,14 +488,14 @@ class _JobPublishPageState extends State<JobPublishPage> {
                   return null;
                 },
                 decoration: InputDecoration(
-                    hintText: 'clearly describe your service',
+                    hintText: 'Clearly describe your service',
                     labelText: 'Description*',
                     hintStyle: GoogleFonts.abel(
-                        textStyle: TextStyle(
-                            fontSize: 35.rt, fontWeight: FontWeight.w500)),
+                        textStyle: const TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w500)),
                     labelStyle: GoogleFonts.acme(
-                        textStyle: TextStyle(
-                            fontSize: 36.rt, fontWeight: FontWeight.normal)),
+                        textStyle: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.normal)),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5))),
                 keyboardType: TextInputType.multiline,

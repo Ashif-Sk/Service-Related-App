@@ -22,7 +22,7 @@ class _UploadPhotoPageState extends State<UploadPhotoPage> {
         backgroundColor: Theme.of(context).colorScheme.tertiary,
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Theme.of(context).colorScheme.tertiary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: _uiComponents.headline2('Upload Images',Theme.of(context).colorScheme.tertiary),
         ),
         body: Padding(
@@ -30,10 +30,6 @@ class _UploadPhotoPageState extends State<UploadPhotoPage> {
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Divider(
-                thickness: 1,
-                color: Theme.of(context).colorScheme.primary,
-              ),
               10.verticalSpace,
               file.isEmpty
                   ? Container(

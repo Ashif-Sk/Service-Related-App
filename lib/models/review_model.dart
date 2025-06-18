@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ReviewModel {
   final String contractorId;
   final String reviewText;
@@ -25,7 +27,7 @@ class ReviewModel {
       "userId" : userId,
       "userProfileImage" : userProfileImage,
       "userName" : userName,
-      "reviewDate" : reviewDate.toIso8601String(),
+      "reviewDate" : Timestamp.fromDate(reviewDate),
     };
   }
 
@@ -37,7 +39,9 @@ class ReviewModel {
         userId: json["userId"],
         userProfileImage: json["userProfileImage"],
         userName: json["userName"],
-        reviewDate: DateTime.parse(json["reviewDate"]),
+        reviewDate: json['timeStamp'] is Timestamp
+            ? (json['timeStamp'] as Timestamp).toDate()  // Convert Timestamp to DateTime
+            : DateTime.now(),
     );
   }
 }

@@ -45,16 +45,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           TextFormField(
             controller: emailcontroller,
             decoration: InputDecoration(
-                prefixIcon:  Icon(Icons.email_rounded,color: Theme.of(context).colorScheme.primary,),
+                prefixIcon:  Icon(Icons.alternate_email_outlined,color: Theme.of(context).colorScheme.primary,),
                 hintText: 'Enter email',
                 labelText: 'Email',
                 hintStyle: GoogleFonts.abel(
-                    textStyle: TextStyle(
-                        fontSize: 35.rt,
+                    textStyle: const TextStyle(
+                        fontSize: 14,
                         fontWeight: FontWeight.w500)),
                 labelStyle: GoogleFonts.abel(
-                    textStyle: TextStyle(
-                        fontSize: 36.rt,
+                    textStyle: const TextStyle(
+                        fontSize: 16,
                         fontWeight: FontWeight.w500
                     )),
                 border: OutlineInputBorder(

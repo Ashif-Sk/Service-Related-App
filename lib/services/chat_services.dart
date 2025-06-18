@@ -65,7 +65,7 @@ class ChatServices {
     return _firestore
         .collection('chats')
         .doc(chatRoomId)
-        .collection('messages')
+        .collection('messages').orderBy("timeStamp",descending: true)
         .snapshots();
   }
 
@@ -76,7 +76,7 @@ class ChatServices {
         .collection('messages')
         .add(message.toJson());
     //Update last message
-    _firestore
+    await _firestore
         .collection('chats')
         .doc(chatRoomId)
         .update({"lastMessage": message.message, "timeStamp": DateTime.now()});

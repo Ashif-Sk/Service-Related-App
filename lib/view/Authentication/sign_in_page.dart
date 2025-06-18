@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contrador/models/user_model.dart';
 import 'package:contrador/services/user_services.dart';
-import 'package:contrador/view/Authentication/forgot_pass_page.dart';
 import 'package:contrador/view/Authentication/log_in_page.dart';
 import 'package:contrador/view/bottom_nav_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,14 +18,17 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  TextEditingController emailcontroller = TextEditingController();
-  TextEditingController passwordcontroller = TextEditingController();
-  TextEditingController namecontroller = TextEditingController();
-  TextEditingController confirmpasswordcontroller = TextEditingController();
+  final TextEditingController _emailcontroller = TextEditingController();
+  final TextEditingController _passwordcontroller = TextEditingController();
+  final TextEditingController _namecontroller = TextEditingController();
+  final TextEditingController _confirmpasswordcontroller =
+      TextEditingController();
   final GoogleServices _googleServices = GoogleServices();
   final UiComponents _uiComponents = UiComponents();
   final UserServices _userServices = UserServices();
   String userId = '';
+  bool _isConditionChecked = true;
+  bool _isVisible = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -39,43 +40,42 @@ class _SignUpPageState extends State<SignUpPage> {
         password: password,
       );
       userId = userCredential.user!.uid;
-      _userServices.addUserDetails(UserModel(
-          userId: userId,
-          name: namecontroller.text.trim(),
-          phone: '',
-          email: emailcontroller.text.trim(),
-          imagePath: '',
-          address: '',
-          latitude: 0.0,
-          longitude: 0.0,
-          gender: ''), userId);
+      _userServices.addUserDetails(
+          UserModel(
+              userId: userId,
+              name: _namecontroller.text.trim(),
+              phone: '',
+              email: _emailcontroller.text.trim(),
+              imagePath: '',
+              address: '',
+              latitude: 0.0,
+              longitude: 0.0,
+              gender: ''),
+          userId);
     } on FirebaseAuthException catch (e) {
       _uiComponents.errorDialog(e.message.toString(), context);
     }
 
     Flexify.goRemoveAll(
-        const BottomNavBar(initialPage: 0,),
-      animation: FlexifyRouteAnimations.slide,
-      duration: const Duration(milliseconds: 500)
-    );
-    }
-
-  // Future addUserDetails(String email, String name) async {
-  //   CollectionReference users = FirebaseFirestore.instance.collection('users');
-  //   await users.doc(userId).set({'email': email, 'name': name, 'uid': userId});
-  // }
+        const BottomNavBar(
+          initialPage: 0,
+        ),
+        animation: FlexifyRouteAnimations.slide,
+        duration: const Duration(milliseconds: 500));
+  }
 
   @override
   void dispose() {
-    emailcontroller.dispose();
-    passwordcontroller.dispose();
-    namecontroller.dispose();
+    _emailcontroller.dispose();
+    _passwordcontroller.dispose();
+    _namecontroller.dispose();
+    _confirmpasswordcontroller.dispose();
     super.dispose();
-
   }
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -91,121 +91,183 @@ class _SignUpPageState extends State<SignUpPage> {
                 20.verticalSpace,
                 TextFormField(
                   textInputAction: TextInputAction.next,
-                  controller: namecontroller,
+                  controller: _namecontroller,
                   validator: (name) {
                     if (name == null || name.isEmpty) {
                       return 'Enter username';
-                    } else if (name.trim().length <= 6){
+                    } else if (name.trim().length <= 6) {
                       return 'Must be more than 6 char';
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.person,),
-                      hintText: 'enter username',
+                      prefixIcon: const Icon(
+                        Icons.person_outline_rounded,
+                      ),
+                      prefixIconColor: Theme.of(context).colorScheme.primary,
+                      hintText: 'Enter username',
                       labelText: 'Username',
                       hintStyle: GoogleFonts.abel(
-                          textStyle: TextStyle(
-                              fontSize: 35.rt,
-                              fontWeight: FontWeight.w500)),
+                          textStyle: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500)),
                       labelStyle: GoogleFonts.acme(
-                          textStyle: TextStyle(
-                              fontSize: 36.rt,
-                              fontWeight: FontWeight.normal
-                          )),
+                          textStyle: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.normal)),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5))),
                   keyboardType: TextInputType.text,
                 ),
-                10.verticalSpace,
+                5.verticalSpace,
                 TextFormField(
                   textInputAction: TextInputAction.next,
-                  controller: emailcontroller,
+                  controller: _emailcontroller,
                   decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.email_rounded),
-                      hintText: 'enter valid email',
+                      prefixIcon: const Icon(Icons.alternate_email_outlined),
+                      prefixIconColor: Theme.of(context).colorScheme.primary,
+                      hintText: 'Enter a valid email',
                       labelText: 'Email',
                       hintStyle: GoogleFonts.abel(
-                          textStyle: TextStyle(
-                              fontSize: 35.rt,
-                              fontWeight: FontWeight.w500)),
+                          textStyle: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500)),
                       labelStyle: GoogleFonts.acme(
-                          textStyle: TextStyle(
-                              fontSize: 36.rt,
-                              fontWeight: FontWeight.normal
-                          )),
+                          textStyle: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.normal)),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5))),
                   keyboardType: TextInputType.emailAddress,
                 ),
-                10.verticalSpace,
+                5.verticalSpace,
                 TextFormField(
                   textInputAction: TextInputAction.next,
-                  controller: passwordcontroller,
-                  obscureText: true,
-                  validator: (pass){
-                    if(pass!.isEmpty){
+                  controller: _passwordcontroller,
+                  obscureText: !_isVisible,
+                  validator: (pass) {
+                    if (pass!.isEmpty) {
                       return 'Enter a password';
-                    } else if (pass.trim().length <= 6){
+                    } else if (pass.trim().length <= 6) {
                       return 'Must be more than 6 char';
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.lock),
-                      hintText: 'enter strong password',
+                      prefixIcon: const Icon(Icons.lock_outline_rounded),
+                      suffixIconColor: !_isVisible?Colors.grey:Colors.grey.shade700,
+                      prefixIconColor: Theme.of(context).colorScheme.primary,
+                      suffixIcon: InkWell(
+                          onTap: () {
+                            setState(() {
+                              _isVisible = !_isVisible;
+                            });
+                          },
+                          child: _isVisible
+                              ? const Icon(Icons.visibility_outlined)
+                              : const Icon(Icons.visibility_off_outlined)),
+                      hintText: 'Enter strong password',
                       labelText: 'Password',
                       hintStyle: GoogleFonts.abel(
-                          textStyle: TextStyle(
-                              fontSize: 35.rt,
-                              fontWeight: FontWeight.w500)),
+                          textStyle: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500)),
                       labelStyle: GoogleFonts.acme(
-                          textStyle: TextStyle(
-                              fontSize: 36.rt,
-                              fontWeight: FontWeight.normal
-                          )),
+                          textStyle: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.normal)),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5))),
                 ),
-                10.verticalSpace,
+                5.verticalSpace,
                 TextFormField(
-                  controller: confirmpasswordcontroller,
+                  controller: _confirmpasswordcontroller,
                   obscureText: true,
                   validator: (pass) {
-                    if (pass != passwordcontroller.text) {
+                    if (pass != _passwordcontroller.text) {
                       return 'Not matched';
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.lock),
-                      hintText: 're-enter password',
+                      prefixIcon: const Icon(Icons.lock_outline_rounded),
+                      prefixIconColor: Theme.of(context).colorScheme.primary,
+                      hintText: 'Re-enter password',
                       labelText: 'Confirm',
                       hintStyle: GoogleFonts.abel(
-                          textStyle: TextStyle(
-                              fontSize: 35.rt,
-                              fontWeight: FontWeight.w500)),
+                          textStyle: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500)),
                       labelStyle: GoogleFonts.acme(
-                          textStyle: TextStyle(
-                              fontSize: 36.rt,
-                              fontWeight: FontWeight.normal
-                          )),
+                          textStyle: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.normal)),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5))),
                 ),
-                NormalTextButton(
-                    onPressed: () {
-                      Flexify.go(const ForgotPasswordPage(),
-                          animation: FlexifyRouteAnimations.slideFromBottom,
-                          animationDuration: const Duration(milliseconds: 300));
-                    },
-                    buttonText: 'Forgot Password?',
-                    extraText: ''),
+                5.verticalSpace,
+                FittedBox(
+                  child: SizedBox(
+                    height: height * 0.05,
+                    child: Row(
+                      // crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Checkbox(
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                            value: _isConditionChecked,
+                            onChanged: (value) {
+                              setState(() {
+                                _isConditionChecked = value!;
+                              });
+                            }),
+                        _uiComponents.normalText('I agree to the '),
+                        InkWell(
+                          onTap: () {},
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              "terms & conditions",
+                              textScaler: const TextScaler.linear(1.0),
+                              style: GoogleFonts.abel(
+                                textStyle: TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    color: Colors.blue.shade900,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline),
+                              ),
+                            ),
+                          ),
+                        ),
+                        _uiComponents.normalText(' and '),
+                        InkWell(
+                          onTap: () {},
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              "privacy policies",
+                              // textAlign: TextAlign.right,
+                              textScaler: const TextScaler.linear(1.0),
+                              style: GoogleFonts.abel(
+                                textStyle: TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    color: Colors.blue.shade900,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                8.verticalSpace,
                 UniversalButton(
                     onPressed: () {
+                      if (!_isConditionChecked) {
+                        _uiComponents.errorDialog(
+                            "Please agree to the terms & conditions and privacy policies",
+                            context);
+                      }
                       if (_formKey.currentState!.validate()) {
-                        signup(emailcontroller.text.trim(),
-                            passwordcontroller.text.trim(), context);
+                        signup(_emailcontroller.text.trim(),
+                            _passwordcontroller.text.trim(), context);
                       }
                     },
                     buttonText: 'SIGN UP'),
