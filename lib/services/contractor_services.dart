@@ -20,20 +20,15 @@ class ContractorServices {
     }
   }
 
-  Future<List<ContractorModel>?> getAllServicesBySubcategoryId(
-      String subCategoryId) async {
+  Future<List<ContractorModel>?> getAllServicesBySubcategoryId(String subCategoryId) async {
     try {
       final service = _firestore.collectionGroup('services');
-      List<ContractorModel> services = await service
-          .where("subcategory", isEqualTo: subCategoryId)
-          .orderBy("timeStamp", descending: true)
-          .get()
-          .then((snapshots) => snapshots.docs
-              .map((doc) => ContractorModel.fromJson(doc.data()))
-              .toList());
+      List<ContractorModel> services= await service.where('subCategoryId', isEqualTo: subCategoryId).get().then(
+          (snapshots) => snapshots.docs
+              .map((doc) => ContractorModel.fromJson(doc.data())).toList());
       return services;
     } catch (e) {
-      print(e.toString());
+      print('no available Contractor service ');
     }
     return null;
   }
@@ -44,37 +39,15 @@ class ContractorServices {
           .collection('contractors')
           .doc(contractorId)
           .collection('services');
-      List<ContractorModel> services = await service.get().then((snapshots) {
-        return snapshots.docs
-            .map((doc) =>
-                ContractorModel.fromJson(doc.data() as Map<String, dynamic>))
-            .toList();
-      });
-      return services;
+    List<ContractorModel> services= await service.get().then(
+              (snapshots) {
+                return snapshots.docs
+                    .map((doc) => ContractorModel.fromJson(doc.data() as Map<String,dynamic>)).toList();
+              });
+    return services;
     } catch (e) {
       print('no availableContractor service ');
     }
     return null;
   }
-
-  Future<bool?> deleteService(String contractorId, String serviceId) async {
-    try {
-      final services = _firestore
-          .collection('contractors')
-          .doc(contractorId)
-          .collection('services');
-
-      final snapshot = await services.where("serviceId", isEqualTo: serviceId).get();
-
-      for (var doc in snapshot.docs) {
-        await services.doc(doc.id).delete();
-        print("Deleted: ${doc.id}");
-        return true;
-      }
-    } catch (e) {
-      print("Error in deleting service: ${e.toString()}");
-    }
-    return null;
-  }
-
 }

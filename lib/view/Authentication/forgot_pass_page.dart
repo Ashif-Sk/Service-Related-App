@@ -39,22 +39,22 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
            const BigImage(imagePath: 'images/reset-password.png'),
           const SizedBox(height: 40,),
            Divider(thickness: 0.3,color: Theme.of(context).colorScheme.secondary),
-          _uiComponents.headline2('Enter your email and we will send you password reset link',Theme.of(context).colorScheme.secondary),
+          _uiComponents.headline2('Enter your email and we will send you password reset link'),
            Divider(thickness: 0.3,color: Theme.of(context).colorScheme.secondary,),
           const SizedBox(height: 30,),
           TextFormField(
             controller: emailcontroller,
             decoration: InputDecoration(
-                prefixIcon:  Icon(Icons.alternate_email_outlined,color: Theme.of(context).colorScheme.primary,),
+                prefixIcon:  Icon(Icons.email_rounded,color: Theme.of(context).colorScheme.primary,),
                 hintText: 'Enter email',
                 labelText: 'Email',
                 hintStyle: GoogleFonts.abel(
-                    textStyle: const TextStyle(
-                        fontSize: 14,
+                    textStyle: TextStyle(
+                        fontSize: 35.rt,
                         fontWeight: FontWeight.w500)),
                 labelStyle: GoogleFonts.abel(
-                    textStyle: const TextStyle(
-                        fontSize: 16,
+                    textStyle: TextStyle(
+                        fontSize: 36.rt,
                         fontWeight: FontWeight.w500
                     )),
                 border: OutlineInputBorder(

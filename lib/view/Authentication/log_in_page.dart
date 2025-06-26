@@ -22,7 +22,6 @@ class _LogInPageState extends State<LogInPage> {
   final GoogleServices _googleServices = GoogleServices();
   final UiComponents _uiComponents = UiComponents();
   String? user;
-  bool _isVisible = false;
 
   Future login(email, password) async {
     try {
@@ -32,6 +31,7 @@ class _LogInPageState extends State<LogInPage> {
         password: password,
       );
       user = userCredential.user!.uid;
+      // addUserDetails(emailcontroller.text.trim());
     } on FirebaseAuthException {
       _uiComponents.errorDialog('Invalid email or password.Please try again', context);
     }
@@ -71,17 +71,16 @@ class _LogInPageState extends State<LogInPage> {
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.alternate_email),
-                    prefixIconColor: Theme.of(context).colorScheme.primary,
+                    prefixIcon: const Icon(Icons.email_rounded),
                     hintText: 'enter email',
                     labelText: 'Email',
                     hintStyle: GoogleFonts.abel(
-                        textStyle: const TextStyle(
-                            fontSize: 14,
+                        textStyle: TextStyle(
+                            fontSize: 35.rt,
                             fontWeight: FontWeight.w500)),
                     labelStyle: GoogleFonts.acme(
-                        textStyle: const TextStyle(
-                            fontSize: 16,
+                        textStyle: TextStyle(
+                            fontSize: 36.rt,
                             fontWeight: FontWeight.normal
                         )),
                     border: OutlineInputBorder(
@@ -90,30 +89,19 @@ class _LogInPageState extends State<LogInPage> {
               10.verticalSpace,
               TextFormField(
                 controller: passwordcontroller,
-                obscureText: !_isVisible,
+                obscureText: true,
                 keyboardType: TextInputType.visiblePassword,
                 decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.lock_outline_rounded),
-                    suffixIconColor: !_isVisible?Colors.grey:Colors.grey.shade700,
-                    prefixIconColor: Theme.of(context).colorScheme.primary,
-                    suffixIcon: InkWell(
-                        onTap: () {
-                          setState(() {
-                            _isVisible = !_isVisible;
-                          });
-                        },
-                        child: _isVisible
-                            ? const Icon(Icons.visibility_outlined)
-                            : const Icon(Icons.visibility_off_outlined)),
-                    hintText: 'Enter password',
+                    prefixIcon: const Icon(Icons.lock),
+                    hintText: 'enter password',
                     labelText: 'Password',
                     hintStyle: GoogleFonts.abel(
-                        textStyle: const TextStyle(
-                            fontSize: 14,
+                        textStyle: TextStyle(
+                            fontSize: 35.rt,
                             fontWeight: FontWeight.w500)),
                     labelStyle: GoogleFonts.acme(
-                        textStyle: const TextStyle(
-                            fontSize: 16,
+                        textStyle: TextStyle(
+                            fontSize: 36.rt,
                             fontWeight: FontWeight.normal
                         )),
                     border: OutlineInputBorder(

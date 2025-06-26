@@ -1,12 +1,12 @@
 import 'package:contrador/components/ui_components.dart';
-import 'package:contrador/models/favourite_model.dart';
-import 'package:contrador/provider/favourite_provider.dart';
 import 'package:contrador/services/chat_services.dart';
+import 'package:contrador/view/bottom_nav_bar.dart';
 import 'package:contrador/view/details/contractor_profile_page.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+import 'package:rating_and_feedback_collector/rating_and_feedback_collector.dart';
+
 import '../../models/contractor_model.dart';
 
 class ServiceDetailsPage extends StatefulWidget {
@@ -22,33 +22,17 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
   final UiComponents _uiComponents = UiComponents();
   final ChatServices _chatServices = ChatServices();
   double currentRating = 4.0;
-  late final FavouriteModel _favouriteModel;
-  @override
-  void initState() {
-   _favouriteModel = FavouriteModel(
-        contractorId: widget.contractor.contractorId,
-        serviceId:  widget.contractor.serviceId,
-        name:  widget.contractor.name,
-       price:  int.parse(widget.contractor.cost),
-        rating:  widget.contractor.rating,
-        imagePath:  widget.contractor.imagePaths.isEmpty?'':widget.contractor.imagePaths[0],
-        option:  widget.contractor.option,
-        address:  widget.contractor.address);
-    super.initState();
-  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.sizeOf(context).height;
     double width = MediaQuery.sizeOf(context).width;
-    final favourite = Provider.of<FavouriteProvider>(context,listen: true);
-
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.tertiary,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: _uiComponents
-            .headline2(widget.contractor.subcategory.toUpperCase(),Theme.of(context).colorScheme.tertiary),
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        title: _uiComponents.headline2('Subcategory'),
       ),
       body: Column(
         children: [
@@ -68,16 +52,10 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                             backgroundColor: Colors.grey.withOpacity(0.35),
                             itemExtent: 400,
                             shrinkExtent: 200,
-                            children: [
-                              Image.network(
-                                "https://strapi.dhiwise.com/uploads/Firebase_Node_JS_OG_Image_f6223f11a9.png",
-                                fit: BoxFit.cover,
-                              )
-                            ]
-                            //     widget.contractor.imagePaths.map((images) {
-                            //   return Image.network(images);
-                            // }).toList(),
-                            ),
+                            children:
+                                widget.contractor.imagePaths.map((images) {
+                              return Image.network(images);
+                            }).toList()),
                       ),
                     ),
                     Positioned(
@@ -85,12 +63,10 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                         top: 10,
                         child: ReusableIconButton(
                             radius: 20,
-                            icon: favourite.isFavourite(_favouriteModel)?Icons.favorite:Icons.favorite_outline_rounded,
-                            iconColor: favourite.isFavourite(_favouriteModel)?Colors.red:Colors.white,
+                            icon: Icons.favorite_outline_rounded,
+                            iconColor: Colors.black,
                             iconSize: 20,
-                            onPressed: () {
-                              favourite.addToWishlist(_favouriteModel);
-                            }))
+                            onPressed: () {}))
                   ],
                 ),
                 5.verticalSpace,
@@ -109,7 +85,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                               textStyle: TextStyle(
                                 overflow: TextOverflow.ellipsis,
                                 color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 22,
+                                fontSize: 50.rt,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -120,7 +96,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                               style: GoogleFonts.abel(
                                   textStyle: TextStyle(
                                       overflow: TextOverflow.visible,
-                                      fontSize: 16,
+                                      fontSize: 35.rt,
                                       color: Colors.blue.shade900,
                                       fontWeight: FontWeight.w600)),
                             ),
@@ -132,7 +108,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                                         color: Theme.of(context)
                                             .colorScheme
                                             .secondary,
-                                        fontSize: 16,
+                                        fontSize: 35.rt,
                                         fontWeight: FontWeight.w500)))
                           ])),
                           _uiComponents
@@ -150,7 +126,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                                     overflow: TextOverflow.visible,
                                     color:
                                         Theme.of(context).colorScheme.secondary,
-                                    fontSize: 14,
+                                    fontSize: 25.rt,
                                     fontWeight: FontWeight.w500)),
                           ),
                           ReusableIconButton(
@@ -202,17 +178,13 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                     contentPadding: const EdgeInsets.all(5),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    tileColor: Theme.of(context).colorScheme.primaryContainer,
+                    tileColor: Colors.grey.withOpacity(0.1),
                     leading: Container(
                       height: height * 0.08,
                       width: width * 0.14,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: widget.contractor.profileImage == ''
-                                  ? const NetworkImage(
-                                      "https://th.bing.com/th/id/OIP.voWdvTJvgTx7MS9hmo8sQAHaHa?pid=ImgDet&w=202&h=202&c=7&dpr=1.3")
-                                  : NetworkImage(
-                                      widget.contractor.profileImage),
+                              image: AssetImage(widget.contractor.profileImage),
                               fit: BoxFit.cover),
                           shape: BoxShape.circle,
                           color: Colors.grey.withOpacity(0.35)),
@@ -224,7 +196,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                           textStyle: TextStyle(
                         overflow: TextOverflow.visible,
                         color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 16,
+                        fontSize: 31.rt,
                         fontWeight: FontWeight.bold,
                       )),
                     ),
@@ -237,7 +209,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                 Container(
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.only(left: 10),
-                    child: _uiComponents.headline2('Details',Theme.of(context).colorScheme.secondary)),
+                    child: _uiComponents.headline2('Details')),
                 4.verticalSpace,
                 //subcategory,experience,options
                 Container(
@@ -245,14 +217,14 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                   padding: const EdgeInsets.all(15.0),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context).colorScheme.primaryContainer),
+                      color: Colors.grey.withOpacity(0.1)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ReusableDetailsRow(
                           uiComponents: _uiComponents,
                           title: 'Experience',
-                          subTitle: "${widget.contractor.experience}yr"),
+                          subTitle: widget.contractor.experience),
                       ReusableDetailsRow(
                           uiComponents: _uiComponents,
                           title: 'Option',
@@ -262,45 +234,41 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                         subTitle: widget.contractor.subcategory,
                         uiComponents: _uiComponents,
                       ),
-                      ReusableDetailsRow(
-                          uiComponents: _uiComponents,
-                          title: 'Service Id',
-                          subTitle: widget.contractor.serviceId),
-                      // Row(
-                      //   children: [
-                      //     _uiComponents.normalText('Ratings'),
-                      //     const Spacer(),
-                      //     SizedBox(
-                      //         height: height * 0.035,
-                      //         // width: width * 0.067,
-                      //         child: RatingBar(
-                      //             iconSize: 17,
-                      //             // Size of the rating icons
-                      //             allowHalfRating: false,
-                      //             // Allows selection of half ratings
-                      //             filledIcon: Icons.star,
-                      //             // Icon to display for a filled rating unit
-                      //             emptyIcon: Icons.star_border,
-                      //             // Icon to display for an empty rating units
-                      //             filledColor:
-                      //                 Theme.of(context).colorScheme.primary,
-                      //             // Color of filled rating units
-                      //             emptyColor: Colors.grey,
-                      //             // Color of empty rating units
-                      //             currentRating: widget.contractor.rating,
-                      //             onRatingChanged: (changedRating) {})),
-                      //     Text(
-                      //       '(${widget.contractor.totalRatings})',
-                      //       style: GoogleFonts.abel(
-                      //           textStyle: TextStyle(
-                      //               overflow: TextOverflow.visible,
-                      //               color:
-                      //                   Theme.of(context).colorScheme.secondary,
-                      //               fontSize: 14,
-                      //               fontWeight: FontWeight.w500)),
-                      //     ),
-                      //   ],
-                      // ),
+                      Row(
+                        children: [
+                          _uiComponents.normalText('Ratings'),
+                          const Spacer(),
+                          SizedBox(
+                              height: height * 0.035,
+                              // width: width * 0.067,
+                              child: RatingBar(
+                                  iconSize: 17,
+                                  // Size of the rating icons
+                                  allowHalfRating: false,
+                                  // Allows selection of half ratings
+                                  filledIcon: Icons.star,
+                                  // Icon to display for a filled rating unit
+                                  emptyIcon: Icons.star_border,
+                                  // Icon to display for an empty rating units
+                                  filledColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  // Color of filled rating units
+                                  emptyColor: Colors.grey,
+                                  // Color of empty rating units
+                                  currentRating: widget.contractor.rating,
+                                  onRatingChanged: (changedRating) {})),
+                          Text(
+                            '(${widget.contractor.totalRatings})',
+                            style: GoogleFonts.abel(
+                                textStyle: TextStyle(
+                                    overflow: TextOverflow.visible,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                    fontSize: 30.rt,
+                                    fontWeight: FontWeight.w500)),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -312,63 +280,22 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                 Container(
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.only(left: 10),
-                    child: _uiComponents.headline2('Description',Theme.of(context).colorScheme.secondary)),
+                    child: _uiComponents.headline2('Description')),
                 4.verticalSpace,
                 Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     padding: const EdgeInsets.all(15.0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Theme.of(context).colorScheme.primaryContainer),
+                        color: Colors.grey.withOpacity(0.1)),
                     child: Text(widget.contractor.description,
                         textAlign: TextAlign.start,
                         style: GoogleFonts.abel(
-                            textStyle:  TextStyle(
+                            textStyle: TextStyle(
                                 overflow: TextOverflow.visible,
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 14,
+                                fontSize: 30.rt,
                                 fontWeight: FontWeight.w600)))),
                 4.verticalSpace,
-
-                Divider(
-                  thickness: 0.4,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-
-                4.verticalSpace,
-
-                Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 10),
-                    padding: const EdgeInsets.all(15.0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Theme.of(context).colorScheme.secondaryContainer),
-                    child:Text.rich(
-                        TextSpan(children: [
-                      TextSpan(
-                        text: "⚠️Disclaimer: ",
-                        style: GoogleFonts.abel(
-                            textStyle: const TextStyle(
-                                overflow: TextOverflow.visible,
-                                fontSize: 14,
-                                color: Colors.red,
-                                fontWeight: FontWeight.w600)),
-                      ),
-                      TextSpan(
-                          text:"Please note that Contrador only connects users with service providers. We do not verify the authenticity of service providers or their services. Please proceed with caution and good judgement.",
-                          style: GoogleFonts.abel(
-                              textStyle: TextStyle(
-                                  overflow: TextOverflow.visible,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondary,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500)))
-                    ])),
-                ),
-
-                4.verticalSpace,
-
                 Divider(
                   thickness: 0.4,
                   color: Theme.of(context).colorScheme.primary,
@@ -392,8 +319,8 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                     height: height * 0.06,
                     width: width * 0.4,
                     buttonText: 'Chat',
-                    onPressed: () async {
-                      _chatServices.startNewChat(widget.contractor.contractorId);
+                    onPressed: () {
+                      Flexify.go(const BottomNavBar(initialPage: 1));
                     },
                     icon: Icons.chat_bubble_outline),
                 30.horizontalSpace,

@@ -12,16 +12,15 @@ class ReviewServices {
           .collection('reviews');
       await reviews.add(review.toJson());
     } catch (e) {
-      print("Error in uploading review${e.toString()}");
+      print(e.toString());
     }
   }
 
   Stream<List<ReviewModel>> getReviews (String contractorId) {
-    final snapshots = _firestore
+    return _firestore
         .collection('contractors')
         .doc(contractorId)
-        .collection('reviews').snapshots();
-    return snapshots.map((snapshot){
+        .collection('reviews').snapshots().map((snapshot){
           return snapshot.docs.map((doc)=> ReviewModel.fromJson(doc.data())).toList();
     });
   }
@@ -41,40 +40,14 @@ class ReviewServices {
         }
 
         double newRating = totalRating/ratingCount;
-        print(newRating);
 
-        await _firestore.collection('contractors').doc(contractorId).get().then((snapshot) async {
-          if(snapshot.exists){
-            await _firestore.collection('contractors').doc(contractorId).update({
-              "rating" : newRating,
-              "totalRatings" : ratingCount,
-            });
-          } else{
-            await _firestore.collection('contractors').doc(contractorId).set({
-              "rating" : newRating,
-              "totalRatings" : ratingCount,
-            });
-          }
+        await _firestore.collection('contractor').doc(contractorId).update({
+          "rating" : newRating,
+          "totalRatings" : ratingCount,
         });
-
       }
     } catch (e){
-      print("Error in rating update${e.toString()}");
+      print('Error in updating rating');
     }
   }
-
-  Future<Map<String, dynamic>?> getRatingData(String contractorId) async {
-    DocumentSnapshot snapshot =
-    await FirebaseFirestore.instance.collection('contractors').doc(contractorId).get();
-
-    if (snapshot.exists) {
-      Map<String, dynamic>? ratingData = snapshot.data() as Map<String, dynamic>?;
-      print(ratingData);
-      return ratingData;
-    } else {
-      print("No data found.");
-      return null;
-    }
-  }
-
 }

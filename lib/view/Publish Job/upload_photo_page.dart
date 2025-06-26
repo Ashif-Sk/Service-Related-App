@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:contrador/components/ui_components.dart';
-import 'package:contrador/services/upload_media.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,8 +14,7 @@ class UploadPhotoPage extends StatefulWidget {
 
 class _UploadPhotoPageState extends State<UploadPhotoPage> {
   final UiComponents _uiComponents = UiComponents();
-  final UploadMedia _uploadMedia = UploadMedia();
-   List<XFile?> _imagesList = [];
+  List<XFile?> file = [];
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +22,20 @@ class _UploadPhotoPageState extends State<UploadPhotoPage> {
         backgroundColor: Theme.of(context).colorScheme.tertiary,
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          title: _uiComponents.headline2('Upload Images',Theme.of(context).colorScheme.tertiary),
+          backgroundColor: Theme.of(context).colorScheme.tertiary,
+          title: _uiComponents.headline2('Upload Images'),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Divider(
+                thickness: 1,
+                color: Theme.of(context).colorScheme.primary,
+              ),
               10.verticalSpace,
-              _imagesList.isEmpty
+              file.isEmpty
                   ? Container(
                 alignment: Alignment.center,
                       height: 250,
@@ -52,7 +54,7 @@ class _UploadPhotoPageState extends State<UploadPhotoPage> {
                               borderRadius: BorderRadius.circular(5)),
                           backgroundColor: Colors.black,
                           itemExtent: 400,
-                          children: _imagesList.map((image) {
+                          children: file.map((image) {
                             return SizedBox(
                               height: 200,
                               width: double.maxFinite,
@@ -68,11 +70,8 @@ class _UploadPhotoPageState extends State<UploadPhotoPage> {
                 width: double.maxFinite,
                 child: NormalMaterialButton(
                     text: 'Open Camera',
-                    onPressed: () async {
-                      // _openCamera();
-                      _imagesList.add(await _uploadMedia.openCamera());
-                      setState(() {
-                      });
+                    onPressed: () {
+                      _openCamera();
                     }),
               ),
               8.verticalSpace,
@@ -80,12 +79,8 @@ class _UploadPhotoPageState extends State<UploadPhotoPage> {
                 width: double.maxFinite,
                 child: NormalMaterialButton(
                     text: 'Upload images',
-                    onPressed: () async {
-                      // _pickImages();
-                      _imagesList = await _uploadMedia.pickFromGallery(isSingleImage: false);
-                      setState(() {
-
-                      });
+                    onPressed: () {
+                      _pickImages();
                     }),
               ),
               10.verticalSpace,
@@ -96,5 +91,26 @@ class _UploadPhotoPageState extends State<UploadPhotoPage> {
           ),
         ));
   }
+
+  Future<List<XFile?>> _pickImages() async {
+    ImagePicker picker = ImagePicker();
+    List<XFile> images = await picker.pickMultiImage(
+      limit: 4,
+    );
+    setState(() {
+      file.addAll(images);
+    });
+    return file;
+  }
+
+  Future<List<XFile?>> _openCamera() async {
+    ImagePicker picker = ImagePicker();
+    XFile? image = await picker.pickImage(source: ImageSource.camera);
+    setState(() {
+      file.add(image);
+    });
+    return file;
+  }
+
 
 }

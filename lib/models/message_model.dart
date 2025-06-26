@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class MessageModel{
   final String senderId;
   final String message;
@@ -17,7 +15,7 @@ class MessageModel{
     return {
       "senderId": senderId,
       "messageType" : messageType,
-      "timeStamp" : Timestamp.fromDate(timeStamp),
+      "timeStamp" : timeStamp.toIso8601String(),
       "message" : message,
     };
   }
@@ -26,7 +24,7 @@ class MessageModel{
     return MessageModel(
       senderId: json["senderId"],
       messageType: json["messageType"],
-      timeStamp: json["timeStamp"] is Timestamp ? (json["timeStamp"] as Timestamp).toDate():DateTime.now(),
+      timeStamp: DateTime.parse(json["timeStamp"]),
       message: json["message"],
     );
   }

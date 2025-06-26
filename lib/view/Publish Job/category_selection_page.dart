@@ -20,8 +20,8 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: _uiComponents.headline2('What are you offering?',Theme.of(context).colorScheme.tertiary),
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        title: _uiComponents.headline2('What are you offering?'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),

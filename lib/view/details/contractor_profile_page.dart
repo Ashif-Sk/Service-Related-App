@@ -89,13 +89,9 @@ class _ContractorProfilePageState extends State<ContractorProfilePage>
                     width: width * 0.26,
                     decoration: BoxDecoration(
                         image:  DecorationImage(
-                            image: widget.contractor!.profileImage == ''
-                                ? const NetworkImage(
-                                "https://th.bing.com/th/id/OIP.voWdvTJvgTx7MS9hmo8sQAHaHa?pid=ImgDet&w=202&h=202&c=7&dpr=1.3")
-                                : NetworkImage(
-                                widget.contractor!.profileImage),
+                            image: NetworkImage(widget.contractor!.profileImage),
                             fit: BoxFit.contain),
-                        border: Border.all(color: Colors.white, width: 1.5),
+                        border: Border.all(color: Colors.white, width: 2),
                         shape: BoxShape.circle,
                         color: Colors.grey.withOpacity(0.35)),
                   ),
@@ -148,7 +144,7 @@ class _ContractorProfilePageState extends State<ContractorProfilePage>
                         constraints: BoxConstraints(maxHeight: height * 0.55),
                         isScrollControlled: true,
                         backgroundColor:
-                            Theme.of(context).colorScheme.tertiary,
+                            Theme.of(context).colorScheme.primaryContainer,
                         useSafeArea: true,
                         showDragHandle: true,
                         shape: const RoundedRectangleBorder(
@@ -168,23 +164,23 @@ class _ContractorProfilePageState extends State<ContractorProfilePage>
             padding: const EdgeInsets.all(15.0),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Theme.of(context).colorScheme.primaryContainer),
+                color: Colors.grey.withOpacity(0.1)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ReusableDetailsRow(
                     uiComponents: _uiComponents,
+                    title: 'Gender',
+                    subTitle: "N/A"),
+                ReusableDetailsRow(
+                    uiComponents: _uiComponents,
                     title: 'Experience',
-                    subTitle: "${widget.contractor!.experience} yr"),
+                    subTitle: widget.contractor!.experience),
                 ReusableDetailsRow(
                   title: 'Followers',
                   subTitle: '20',
                   uiComponents: _uiComponents,
                 ),
-                ReusableDetailsRow(
-                    uiComponents: _uiComponents,
-                    title: 'Address',
-                    subTitle: widget.contractor!.address),
               ],
             ),
           ),
@@ -208,6 +204,7 @@ class _ContractorProfilePageState extends State<ContractorProfilePage>
                 indicatorSize: TabBarIndicatorSize.tab,
                 indicator: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
+                    // border: Border.all(color: Theme.of(context).colorScheme.secondary),
                     color: Theme.of(context).colorScheme.tertiary),
                 tabs: const [
                   Tab(
@@ -220,9 +217,9 @@ class _ContractorProfilePageState extends State<ContractorProfilePage>
           ),
           Flexible(
             fit: FlexFit.tight,
-            child: TabBarView(controller: _tabController, children:  [
-              ServicesTabView(contractorId: widget.contractorId,),
-               ReviewTabView(contractorId: widget.contractorId,contractor: widget.contractor,),
+            child: TabBarView(controller: _tabController, children: const [
+              ServicesTabView(),
+              ReviewTabView(),
             ]),
           )
         ],

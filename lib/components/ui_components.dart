@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class UiComponents {
-  Widget headline2(String text,Color color) {
+  Widget headline2(String text) {
     return Text(text,
         textAlign: TextAlign.center,
         style: GoogleFonts.abel(
-            textStyle:   TextStyle(
+            textStyle: const TextStyle(
                 overflow: TextOverflow.visible,
-                color: color,
                 fontSize: 20,
                 fontWeight: FontWeight.w600)));
   }
@@ -18,9 +17,9 @@ class UiComponents {
     return Text(text,
         // textAlign: TextAlign.left,
         style: GoogleFonts.abel(
-            textStyle: const TextStyle(
+            textStyle: TextStyle(
                 overflow: TextOverflow.visible,
-                fontSize: 16,
+                fontSize: 35.rt,
                 fontWeight: FontWeight.w600)));
   }
 
@@ -28,9 +27,9 @@ class UiComponents {
     return Text(text,
         textAlign: TextAlign.start,
         style: GoogleFonts.abel(
-            textStyle: const TextStyle(
+            textStyle: TextStyle(
                 overflow: TextOverflow.ellipsis,
-                fontSize: 14,
+                fontSize: 30.rt,
                 fontWeight: FontWeight.w600)));
   }
 
@@ -62,11 +61,11 @@ class UiComponents {
                   message,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.abel(
-                      textStyle:  TextStyle(
+                      textStyle: TextStyle(
                           overflow: TextOverflow.visible,
-                          fontSize: 14,
+                          fontSize: 32.rt,
                           fontWeight: FontWeight.w700,
-                          color: Theme.of(context).colorScheme.secondary)),
+                          color: Colors.black)),
                 ),
               ],
             ),
@@ -124,7 +123,7 @@ class UiComponents {
                   style: GoogleFonts.aclonica(
                     textStyle: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
-                        fontSize: 14),
+                        fontSize: 28.rt),
                   ),
                 ),
               ),
@@ -135,7 +134,7 @@ class UiComponents {
                   style: GoogleFonts.aclonica(
                     textStyle: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
-                        fontSize: 14),
+                        fontSize: 28.rt),
                   ),
                 ),
               ),
@@ -154,7 +153,7 @@ class UiComponents {
         return showModalBottomSheet(
         showDragHandle: true,
         backgroundColor:
-        Theme.of(context).colorScheme.tertiary,
+        Theme.of(context).colorScheme.primaryContainer,
         constraints: BoxConstraints(maxHeight: height),
         useSafeArea: true,
         shape: const RoundedRectangleBorder(
@@ -238,14 +237,6 @@ class UiComponents {
           );
         });
   }
-
-  Widget loading(){
-    return Image.asset(
-      "images/helmet-unscreen.gif",
-      // color: Colors.white,
-      height: 90,
-    );
-  }
 }
 
 class BigImage extends StatelessWidget {
@@ -280,14 +271,16 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // double height = MediaQuery.of(context).size.height;
+    // double width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: onPressed,
       child: SizedBox(
         height: height * 0.19,
         width: width * 0.30,
         child: Card(
-          elevation: 0,
-          color: Theme.of(context).colorScheme.primaryContainer,
+          elevation: 0.5,
+          color: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -409,7 +402,7 @@ class ReusableListTile extends StatelessWidget {
               textStyle: TextStyle(
             overflow: TextOverflow.visible,
             color: Theme.of(context).colorScheme.secondary,
-            fontSize: 16,
+            fontSize: 35.rt,
             fontWeight: FontWeight.bold,
           ))),
       trailing: Icon(
@@ -622,7 +615,7 @@ class _ReportFormState extends State<ReportForm> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _uiComponents.headline2('Report?',Theme.of(context).colorScheme.secondary),
+              _uiComponents.headline2('Report?'),
               IconButton(onPressed: (){Flexify.back();}, icon: const Icon(Icons.close_rounded))
             ],
           ),
@@ -709,7 +702,7 @@ class ReusableDetailsRow extends StatelessWidget {
             textStyle: TextStyle(
                 overflow: TextOverflow.visible,
                 color: Theme.of(context).colorScheme.secondary,
-                fontSize: 14,
+                fontSize: 30.rt,
                 fontWeight: FontWeight.w500),
           ),
         ),
@@ -742,7 +735,7 @@ class _ReusableIconButtonState extends State<ReusableIconButton> {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      backgroundColor: Colors.grey.withOpacity(0.1),
       radius: widget.radius,
       child: IconButton(
         onPressed: widget.onPressed,

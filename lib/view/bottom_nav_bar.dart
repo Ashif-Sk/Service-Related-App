@@ -7,12 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BottomNavBar extends StatefulWidget {
-  final int initialPage;
-
-  const BottomNavBar({
-    super.key,
-    required this.initialPage,
-  });
+   final int initialPage;
+   const BottomNavBar({super.key,  required this.initialPage,});
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
@@ -24,33 +20,24 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final accentColor = const Color(0xffffffff);
   final backgroundColor = const Color(0xffffffff);
   final errorColor = const Color(0xffEF4444);
-  late PageController _myPage = PageController();
+  late  PageController _myPage = PageController();
   int _currentPage = 0;
-
   @override
   void initState() {
     _myPage = PageController(initialPage: widget.initialPage);
-    _currentPage = widget.initialPage;
+    _currentPage=widget.initialPage;
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Container(
-        decoration:  const BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(10), topLeft: Radius.circular(10)),
-          border: Border(
-            top: BorderSide(color: Colors.grey),
-          ),
-
-        ),
-        height: 75,
-        width: MediaQuery.of(context).size.width,
-        child: BottomAppBar(
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
+        child: SizedBox(
+          height: 56,
+          width: MediaQuery.of(context).size.width,
           child: Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

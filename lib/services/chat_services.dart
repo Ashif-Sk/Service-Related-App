@@ -1,60 +1,42 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contrador/models/chat_room_model.dart';
 import 'package:contrador/models/message_model.dart';
-import 'package:contrador/view/chat_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flexify/flexify.dart';
 
 class ChatServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   /*
   Chat room services
    */
-  Future<List<ChatRoomModel>> getUserChatRooms(String userId) async {
-    try {
-      final snapshot = await _firestore
+  Stream<List<ChatRoomModel>> getAllChats(String userId) {
+    return _firestore
+        .collection('chats')
+        .where('userId', isEqualTo: userId)
+        .orderBy('timeStamp', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => ChatRoomModel.fromJson(doc.data()))
+            .toList());
+  }
+
+  Future<String> getChatRoomId(String currentUser, String receiverId,
+      ChatRoomModel chatRoomModel) async {
+    String chatRoomId = currentUser.hashCode <= receiverId.hashCode
+        ? '$currentUser\_$receiverId'
+        : '$receiverId\_$currentUser';
+
+    DocumentSnapshot chatDoc =
+        await _firestore.collection('chats').doc(chatRoomId).get();
+
+    if (!chatDoc.exists) {
+      await _firestore
           .collection('chats')
-          .where('users', arrayContains: userId)
-      .orderBy("timeStamp",descending: true)
-          .get();
-
-      return snapshot.docs.map((doc) => ChatRoomModel.fromJson(doc.data())).toList();
-    } catch (e) {
-      print("Error in getting chatRooms: ${e.toString()}");
-      return []; // Returning an empty list instead of null
+          .doc(chatRoomId)
+          .set(chatRoomModel.toJson());
     }
-  }
-
-
-
-  Future<String> createOrGetChatRoom(String userId1, String userId2) async {
-    String chatRoomId = userId1.hashCode <= userId2.hashCode
-        ? '$userId1\_$userId2'
-        : '$userId2\_$userId1';
-
-    final docRef = _firestore.collection('chats').doc(chatRoomId);
-    final docSnap = await docRef.get();
-
-    if (!docSnap.exists) {
-      ChatRoomModel newRoom = ChatRoomModel(
-        chatRoomId: chatRoomId,
-        users: [userId1, userId2],
-        lastMessage: '',
-        timeStamp: DateTime.now(),
-        isTyping: false,
-      );
-
-      await docRef.set(newRoom.toJson());
-    }
-
     return chatRoomId;
-  }
-
-  void startNewChat(String otherUserId) async {
-    String currentUserId = FirebaseAuth.instance.currentUser!.uid;
-    String chatRoomId = await createOrGetChatRoom(currentUserId, otherUserId);
-    Flexify.go(ChatPage(chatRoomId: chatRoomId, receiverId: otherUserId));
   }
 
   /*
@@ -65,7 +47,7 @@ class ChatServices {
     return _firestore
         .collection('chats')
         .doc(chatRoomId)
-        .collection('messages').orderBy("timeStamp",descending: true)
+        .collection('messages')
         .snapshots();
   }
 
@@ -76,7 +58,7 @@ class ChatServices {
         .collection('messages')
         .add(message.toJson());
     //Update last message
-    await _firestore
+    _firestore
         .collection('chats')
         .doc(chatRoomId)
         .update({"lastMessage": message.message, "timeStamp": DateTime.now()});

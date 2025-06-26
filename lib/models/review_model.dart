@@ -1,6 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class ReviewModel {
+  final String reviewId;
   final String contractorId;
   final String reviewText;
   final double rating;
@@ -10,6 +9,7 @@ class ReviewModel {
   final DateTime reviewDate;
 
   ReviewModel({
+    required this.reviewId,
     required this.contractorId,
     required this.reviewText,
     required this.rating,
@@ -21,27 +21,27 @@ class ReviewModel {
 
   Map<String,dynamic> toJson (){
     return {
+      "reviewId": reviewId,
       "contractorId" : contractorId,
       "reviewText" : reviewText,
       "rating" : rating,
       "userId" : userId,
       "userProfileImage" : userProfileImage,
       "userName" : userName,
-      "reviewDate" : Timestamp.fromDate(reviewDate),
+      "reviewDate" : reviewDate.toIso8601String(),
     };
   }
 
   factory ReviewModel.fromJson (Map<String,dynamic> json){
     return ReviewModel(
+        reviewId: json["reviewId"],
         contractorId: json["contractorId"],
         reviewText: json["reviewText"],
         rating: json["rating"],
         userId: json["userId"],
         userProfileImage: json["userProfileImage"],
         userName: json["userName"],
-        reviewDate: json['timeStamp'] is Timestamp
-            ? (json['timeStamp'] as Timestamp).toDate()  // Convert Timestamp to DateTime
-            : DateTime.now(),
+        reviewDate: DateTime.parse(json["reviewDate"]),
     );
   }
 }

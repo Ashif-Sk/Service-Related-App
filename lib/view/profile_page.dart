@@ -7,11 +7,7 @@ import 'package:contrador/view/profile/wishlist_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-
-import '../provider/user_provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -22,22 +18,11 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final UiComponents _uiComponents = UiComponents();
-  final UserProvider _userProvider = UserProvider();
-  @override
-  void initState() {
-    _userProvider.getUserDetails();
-   super.initState();
-  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    final user = Provider.of<UserProvider>(context,listen: true);
-    if(user.userData == null){
-      return Center(
-        child: _uiComponents.loading()
-      );
-    }
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -55,37 +40,19 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Theme.of(context).colorScheme.primary,
             ),
             4.verticalSpace,
-            Center(
-              child: ClipOval(
-                child: Container(
-                  height: height * 0.13,
-                  width: width * 0.28,
-                  color: Colors.grey,
-                  child: user.userData != null ? Image.asset("images/profile.png")
-                      : Image.network(
-                      user.userData!.imagePath),
-                ),
+            Container(
+              height: height * 0.12,
+              width: width * 0.25,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey.withOpacity(0.35)),
+              child: const Icon(
+                Icons.add_photo_alternate_outlined,
+                size: 30,
               ),
             ),
-            // Container(
-            //   height: height * 0.135,
-            //   width: width * 0.26,
-            //   decoration: BoxDecoration(
-            //       image:  DecorationImage(
-            //           image: user.userData != null ? const NetworkImage(
-            //               "https://th.bing.com/th/id/OIP.voWdvTJvgTx7MS9hmo8sQAHaHa?pid=ImgDet&w=202&h=202&c=7&dpr=1.3")
-            //               : NetworkImage(
-            //               user.userData!.imagePath),
-            //           fit: BoxFit.contain),
-            //       border: Border.all(color: Colors.grey, width: 2),
-            //       shape: BoxShape.circle,
-            //       color: Colors.grey),
-            // ),
             4.verticalSpace,
-            user.userData != null ? _uiComponents.headline2(user.userData!.name,Theme.of(context).colorScheme.secondary):SpinKitCircle(
-              size: 30,
-              color: Theme.of(context).colorScheme.primary,
-            ),
+            _uiComponents.headline2('Sk Ashif Mostafa'),
             8.verticalSpace,
             NormalMaterialButton(
                 text: 'Edit Profile',
@@ -96,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 }),
             10.verticalSpace,
             ReusableListTile(
-                text: 'Wishlist',
+                text: 'Favourite',
                 leadingIcon: Icons.favorite_rounded,
                 onTap: () {
                   Flexify.go(const WishlistPage(),
@@ -106,20 +73,20 @@ class _ProfilePageState extends State<ProfilePage> {
                 trailingIcon: Icons.navigate_next),
             4.verticalSpace,
             ReusableListTile(
-                text: 'Settings',
-                leadingIcon: Icons.settings,
+                text: 'Help & Support',
+                leadingIcon: Icons.headset_mic,
                 onTap: () {
-                  Flexify.go(const SettingsPage(),
+                  Flexify.go(const HelpSupportPage(),
                       animation: FlexifyRouteAnimations.slide,
                       animationDuration: const Duration(milliseconds: 400));
                 },
                 trailingIcon: Icons.navigate_next),
             4.verticalSpace,
             ReusableListTile(
-                text: 'Help & Support',
-                leadingIcon: Icons.headset_mic,
+                text: 'Settings',
+                leadingIcon: Icons.settings,
                 onTap: () {
-                  Flexify.go(const HelpSupportPage(),
+                  Flexify.go(const SettingsPage(),
                       animation: FlexifyRouteAnimations.slide,
                       animationDuration: const Duration(milliseconds: 400));
                 },

@@ -1,3 +1,4 @@
+import 'package:contrador/components/ui_components.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  final UiComponents _uiComponents = UiComponents();
   TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -16,14 +18,14 @@ class _SearchPageState extends State<SearchPage> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: SearchInputFb1(searchController: searchController, hintText: 'Search by ID,name etc')
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        title: _uiComponents.headline2('Search'),
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         children: [
           10.verticalSpace,
-
+          SearchInputFb1(searchController: searchController, hintText: 'Search by ID,name etc')
         ],
       ),
     );

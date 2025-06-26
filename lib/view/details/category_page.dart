@@ -3,7 +3,9 @@ import 'package:contrador/services/contractor_services.dart';
 import 'package:contrador/view/details/service_details_page.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rating_and_feedback_collector/rating_and_feedback_collector.dart';
 
 import '../../models/contractor_model.dart';
 
@@ -21,26 +23,23 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   final UiComponents _uiComponents = UiComponents();
   final ContractorServices _contractorServices = ContractorServices();
-  String _categoryName = 'all';
-
-
+  double currentRating = 4.0;
+  String categoryName = 'all';
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.sizeOf(context).height;
-    // final favourite = Provider.of<FavouriteProvider>(context,listen: true);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: _uiComponents.headline2(widget.appBarTitle,Theme.of(context).colorScheme.tertiary),
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        title: _uiComponents.headline2(widget.appBarTitle),
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             8.verticalSpace,
             SizedBox(
@@ -56,18 +55,17 @@ class _CategoryPageState extends State<CategoryPage> {
                       padding: const EdgeInsets.only(right: 12),
                       child: InkWell(
                         onTap: () {
-                          setState(() {
-                            _categoryName =
-                                widget.subCategoryList[index].toLowerCase();
-                          });
+                          categoryName =
+                              widget.subCategoryList[index].toLowerCase();
+                          setState(() {});
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                              color: _categoryName ==
+                              color: categoryName ==
                                       widget.subCategoryList[index]
                                           .toLowerCase()
                                   ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context).colorScheme.primaryContainer,
+                                  : Colors.white,
                               borderRadius: BorderRadius.circular(5)),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -76,10 +74,9 @@ class _CategoryPageState extends State<CategoryPage> {
                               widget.subCategoryList[index].toString(),
                               style: GoogleFonts.abel(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                color: _categoryName ==
-                                        widget.subCategoryList[index]
-                                            .toLowerCase()
+                                fontSize: 30.rt,
+                                color: categoryName ==
+                                        widget.subCategoryList[index].toLowerCase()
                                     ? Theme.of(context).colorScheme.tertiary
                                     : Theme.of(context).colorScheme.secondary,
                               ),
@@ -91,13 +88,16 @@ class _CategoryPageState extends State<CategoryPage> {
                   }),
             ),
             10.verticalSpace,
-            FutureBuilder<List<ContractorModel>?>(
+            FutureBuilder(
                 future: _contractorServices
-                    .getAllServicesBySubcategoryId(_categoryName.toLowerCase()),
+                    .getAllServicesBySubcategoryId(categoryName),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
-                      child: _uiComponents.loading()
+                      child: SpinKitCircle(
+                        size: 30,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     );
                   } else if (snapshot.hasError) {
                     return Center(
@@ -121,10 +121,7 @@ class _CategoryPageState extends State<CategoryPage> {
                           ContractorModel contractor = contractorList[index];
                           return InkWell(
                             onTap: () {
-                              Flexify.go(
-                                  ServiceDetailsPage(
-                                    contractor: contractor,
-                                  ),
+                              Flexify.go( ServiceDetailsPage(contractor: contractor,),
                                   animation: FlexifyRouteAnimations.slide,
                                   animationDuration:
                                       const Duration(milliseconds: 500));
@@ -149,28 +146,25 @@ class _CategoryPageState extends State<CategoryPage> {
                                             height: height * 0.13,
                                             width: double.maxFinite,
                                             child: Image.network(
-                                              contractor.imagePaths.isEmpty
-                                                  ? "https://strapi.dhiwise.com/uploads/Firebase_Node_JS_OG_Image_f6223f11a9.png"
-                                                  : contractor.imagePaths[0],
+                                              contractor.imagePaths[0],
                                               fit: BoxFit.contain,
                                             ),
                                           ),
                                         ),
-                                        // Positioned(
-                                        //     right: 0,
-                                        //     child: CircleAvatar(
-                                        //       radius: 15,
-                                        //       child: IconButton(
-                                        //         onPressed: () {
-                                        //           favourite.addToWishlist(favouriteModel);
-                                        //         },
-                                        //         icon:  Icon(
-                                        //           favourite.isFavourite(favouriteModel)?Icons.favorite:Icons.favorite_outline_rounded,
-                                        //           color: favourite.isFavourite(favouriteModel)?Colors.red:Colors.black,
-                                        //           size: 15,
-                                        //         ),
-                                        //       ),
-                                        //     ))
+                                        Positioned(
+                                            right: 0,
+                                            child: CircleAvatar(
+                                              radius: 15,
+                                              child: IconButton(
+                                                onPressed: () {},
+                                                icon: const Icon(
+                                                  Icons
+                                                      .favorite_outline_rounded,
+                                                  color: Colors.black,
+                                                  size: 15,
+                                                ),
+                                              ),
+                                            ))
                                       ],
                                     ),
                                     2.verticalSpace,
@@ -184,7 +178,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .secondary,
-                                            fontSize: 16,
+                                            fontSize: 35.rt,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -196,7 +190,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                         style: GoogleFonts.abel(
                                             textStyle: TextStyle(
                                                 overflow: TextOverflow.visible,
-                                                fontSize: 14,
+                                                fontSize: 30.rt,
                                                 color: Colors.blue.shade900,
                                                 fontWeight: FontWeight.w600)),
                                       ),
@@ -208,26 +202,32 @@ class _CategoryPageState extends State<CategoryPage> {
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .secondary,
-                                                fontSize: 14,
+                                                fontSize: 30.rt,
                                                 fontWeight: FontWeight.w500)),
                                       )
                                     ])),
-                                    2.verticalSpace,
-                                    _uiComponents
-                                        .normalText("📍${contractor.address}"),
+                                    SizedBox(
+                                        height: height * 0.035,
+                                        // width: width * 0.067,
+                                        child: RatingBar(
+                                            iconSize: 20,
+                                            // Size of the rating icons
+                                            allowHalfRating: false,
+                                            // Allows selection of half ratings
+                                            filledIcon: Icons.star,
+                                            // Icon to display for a filled rating unit
+                                            emptyIcon: Icons.star_border,
+                                            // Icon to display for an empty rating units
+                                            filledColor: Colors.amber,
+                                            // Color of filled rating units
+                                            emptyColor: Colors.grey,
+                                            // Color of empty rating units
+                                            currentRating: contractor.rating,
+                                            onRatingChanged:
+                                                (changedRating) {})),
                                     const Spacer(),
-                                    Align(
-                                      alignment: Alignment.bottomLeft,
-                                      child: Text(
-                                        "[More Info]",
-                                        style: GoogleFonts.abel(
-                                            textStyle: TextStyle(
-                                                overflow: TextOverflow.visible,
-                                                fontSize: 14,
-                                                color: Colors.blue.shade900,
-                                                fontWeight: FontWeight.w600)),
-                                      ),
-                                    ),
+                                    _uiComponents
+                                        .normalText("📍${contractor.address}")
                                   ],
                                 ),
                               ),

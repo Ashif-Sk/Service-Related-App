@@ -1,16 +1,19 @@
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class ChatRoomModel{
   final String chatRoomId;
-  List<String> users;
+  final String userId;
+  final String receiverId;
+  final String profileImage;
+  final String receiverName;
   final String lastMessage;
   final bool isTyping;
   final DateTime timeStamp;
 
   ChatRoomModel({
     required this.chatRoomId,
-    required this.users,
+    required this.userId,
+    required this.receiverId,
+    required this.receiverName,
+    required this.profileImage,
     required this.lastMessage,
     required this.timeStamp,
      this.isTyping = false,
@@ -19,22 +22,26 @@ class ChatRoomModel{
   Map<String,dynamic> toJson (){
     return {
       "chatRoomId" : chatRoomId,
-      "users": users,
+      "userId": userId,
+      "receiverId" : receiverId,
       "lastMessage" : lastMessage,
-      "timeStamp" : Timestamp.fromDate(timeStamp),
+      "receiverName" : receiverName,
+      "profileImage" : profileImage,
+      "timeStamp" : timeStamp.toIso8601String(),
       "isTyping" : isTyping,
     };
   }
 
   factory ChatRoomModel.fromJson (Map<String,dynamic> json){
     return ChatRoomModel(
-      chatRoomId: json['chatRoomId'] as String,
-      users: (json['users'] as List<dynamic>).map((e) => e.toString()).toList(), // Cast users correctly
-      lastMessage: json['lastMessage'] as String,
-      isTyping: json['isTyping'] as bool,
-      timeStamp: json['timeStamp'] is Timestamp
-          ? (json['timeStamp'] as Timestamp).toDate()  // Convert Timestamp to DateTime
-          : DateTime.now(),
+      chatRoomId: json["chatRoomId"],
+      userId: json["userId"],
+      receiverId: json["receiverId"],
+      receiverName: json["receiverName"],
+      profileImage: json["profileImage"],
+      lastMessage: json["lastMessage"],
+      timeStamp: DateTime.parse(json["timeStamp"]),
+      isTyping: json["isTyping"],
     );
   }
 }

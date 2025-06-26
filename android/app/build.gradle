@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.example.contrador"
-    compileSdk = 35
+    compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

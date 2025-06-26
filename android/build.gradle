@@ -1,33 +1,3 @@
-//allprojects {
-//    repositories {
-//        google()
-//        mavenCentral()
-//    }
-//}
-//
-//rootProject.buildDir = "../build"
-//subprojects {
-//    project.buildDir = "${rootProject.buildDir}/${project.name}"
-//}
-//subprojects {
-//    project.evaluationDependsOn(":app")
-//}
-//
-//tasks.register("clean", Delete) {
-//    delete rootProject.buildDir
-//}
-buildscript {
-    ext.kotlin_version = '1.9.0' // Use at least 1.8.0 for SDK 33+, 1.9.0 is great for SDK 35
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.0' // Match with Gradle wrapper
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
 allprojects {
     repositories {
         google()
