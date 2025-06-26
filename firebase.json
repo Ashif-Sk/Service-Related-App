@@ -1,1 +1,35 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"contrador-6599a","appId":"1:1024929359159:android:4b33496d5812a7704a66b2","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"contrador-6599a","configurations":{"android":"1:1024929359159:android:4b33496d5812a7704a66b2","ios":"1:1024929359159:ios:8a4a3e5c72db81d24a66b2"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "contrador-6599a",
+          "appId": "1:1024929359159:android:4b33496d5812a7704a66b2",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "contrador-6599a",
+          "configurations": {
+            "android": "1:1024929359159:android:4b33496d5812a7704a66b2",
+            "ios": "1:1024929359159:ios:8a4a3e5c72db81d24a66b2"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
+    }
+  ]
+}
