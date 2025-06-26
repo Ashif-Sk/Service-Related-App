@@ -7,8 +7,6 @@ import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:rating_and_feedback_collector/rating_and_feedback_collector.dart';
-
 import '../../models/contractor_model.dart';
 
 class ServiceDetailsPage extends StatefulWidget {
@@ -254,7 +252,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                       ReusableDetailsRow(
                           uiComponents: _uiComponents,
                           title: 'Experience',
-                          subTitle: widget.contractor.experience),
+                          subTitle: "${widget.contractor.experience}yr"),
                       ReusableDetailsRow(
                           uiComponents: _uiComponents,
                           title: 'Option',
@@ -264,41 +262,45 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                         subTitle: widget.contractor.subcategory,
                         uiComponents: _uiComponents,
                       ),
-                      Row(
-                        children: [
-                          _uiComponents.normalText('Ratings'),
-                          const Spacer(),
-                          SizedBox(
-                              height: height * 0.035,
-                              // width: width * 0.067,
-                              child: RatingBar(
-                                  iconSize: 17,
-                                  // Size of the rating icons
-                                  allowHalfRating: false,
-                                  // Allows selection of half ratings
-                                  filledIcon: Icons.star,
-                                  // Icon to display for a filled rating unit
-                                  emptyIcon: Icons.star_border,
-                                  // Icon to display for an empty rating units
-                                  filledColor:
-                                      Theme.of(context).colorScheme.primary,
-                                  // Color of filled rating units
-                                  emptyColor: Colors.grey,
-                                  // Color of empty rating units
-                                  currentRating: widget.contractor.rating,
-                                  onRatingChanged: (changedRating) {})),
-                          Text(
-                            '(${widget.contractor.totalRatings})',
-                            style: GoogleFonts.abel(
-                                textStyle: TextStyle(
-                                    overflow: TextOverflow.visible,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500)),
-                          ),
-                        ],
-                      ),
+                      ReusableDetailsRow(
+                          uiComponents: _uiComponents,
+                          title: 'Service Id',
+                          subTitle: widget.contractor.serviceId),
+                      // Row(
+                      //   children: [
+                      //     _uiComponents.normalText('Ratings'),
+                      //     const Spacer(),
+                      //     SizedBox(
+                      //         height: height * 0.035,
+                      //         // width: width * 0.067,
+                      //         child: RatingBar(
+                      //             iconSize: 17,
+                      //             // Size of the rating icons
+                      //             allowHalfRating: false,
+                      //             // Allows selection of half ratings
+                      //             filledIcon: Icons.star,
+                      //             // Icon to display for a filled rating unit
+                      //             emptyIcon: Icons.star_border,
+                      //             // Icon to display for an empty rating units
+                      //             filledColor:
+                      //                 Theme.of(context).colorScheme.primary,
+                      //             // Color of filled rating units
+                      //             emptyColor: Colors.grey,
+                      //             // Color of empty rating units
+                      //             currentRating: widget.contractor.rating,
+                      //             onRatingChanged: (changedRating) {})),
+                      //     Text(
+                      //       '(${widget.contractor.totalRatings})',
+                      //       style: GoogleFonts.abel(
+                      //           textStyle: TextStyle(
+                      //               overflow: TextOverflow.visible,
+                      //               color:
+                      //                   Theme.of(context).colorScheme.secondary,
+                      //               fontSize: 14,
+                      //               fontWeight: FontWeight.w500)),
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),
@@ -340,11 +342,11 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                     padding: const EdgeInsets.all(15.0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Theme.of(context).colorScheme.primaryContainer),
+                        color: Theme.of(context).colorScheme.secondaryContainer),
                     child:Text.rich(
                         TextSpan(children: [
                       TextSpan(
-                        text: "Disclaimer: ",
+                        text: "⚠️Disclaimer: ",
                         style: GoogleFonts.abel(
                             textStyle: const TextStyle(
                                 overflow: TextOverflow.visible,

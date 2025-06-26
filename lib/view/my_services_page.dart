@@ -151,10 +151,18 @@ class _MyServicesPageState extends State<MyServicesPage> {
                               Container(
                                 alignment: Alignment.topRight,
                                 child: IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
+                                    onPressed: () async {
+                                      final isDeleted = await _contractorServices.deleteService(service.contractorId, service.serviceId);
+                                      if(isDeleted!){
+                                        _contractorServices
+                                            .getAllServicesByContractorId(
+                                                service.contractorId);
+                                        setState(() {});
+                                      }
+                                    },
+                                    icon:  Icon(
                                       Icons.delete_rounded,
-                                      color: Color.fromRGBO(225, 0, 0, 1),
+                                      color: Theme.of(context).colorScheme.primary,
                                       size: 25,
                                     )),
                               )

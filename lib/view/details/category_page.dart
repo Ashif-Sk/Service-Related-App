@@ -1,17 +1,11 @@
 import 'package:contrador/components/ui_components.dart';
-import 'package:contrador/models/favourite_model.dart';
 import 'package:contrador/services/contractor_services.dart';
-import 'package:contrador/services/review_services.dart';
 import 'package:contrador/view/details/service_details_page.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:rating_and_feedback_collector/rating_and_feedback_collector.dart';
 
 import '../../models/contractor_model.dart';
-import '../../provider/favourite_provider.dart';
 
 class CategoryPage extends StatefulWidget {
   final String appBarTitle;
@@ -27,8 +21,6 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   final UiComponents _uiComponents = UiComponents();
   final ContractorServices _contractorServices = ContractorServices();
-  final ReviewServices _reviewServices = ReviewServices();
-  // double _currentRating = 4.0;
   String _categoryName = 'all';
 
 
@@ -127,15 +119,6 @@ class _CategoryPageState extends State<CategoryPage> {
                         itemCount: contractorList!.length,
                         itemBuilder: (context, index) {
                           ContractorModel contractor = contractorList[index];
-                         final favouriteModel = FavouriteModel(
-                              contractorId: contractorList[index].contractorId,
-                              serviceId:  contractorList[index].serviceId,
-                              name:  contractorList[index].name,
-                              price:  int.parse(contractorList[index].cost),
-                              rating:  contractorList[index].rating,
-                              imagePath:  contractorList[index].imagePaths.isEmpty?'':contractorList[index].imagePaths[0],
-                              option:  contractorList[index].option,
-                              address:  contractorList[index].address);
                           return InkWell(
                             onTap: () {
                               Flexify.go(

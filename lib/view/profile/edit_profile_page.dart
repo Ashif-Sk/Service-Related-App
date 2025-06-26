@@ -1,11 +1,10 @@
 import 'dart:io';
 
 import 'package:contrador/models/user_model.dart';
-import 'package:contrador/services/user_services.dart';
+import 'package:contrador/services/upload_media.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,7 +22,7 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final UiComponents _uiComponents = UiComponents();
-  final UserServices _userServices = UserServices();
+  final UploadMedia _uploadMedia = UploadMedia();
   final UserProvider _userProvider = UserProvider();
   final _formKey = GlobalKey<FormState>();
 
@@ -35,27 +34,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Position? _contractorPosition;
   String? _contactorAddress;
-  String _profileImage = '';
+  XFile? _profileImage;
+  String? _uploadedImageUrl;
   final List<String> _genderList = ['Male', 'Female', 'Others'];
   String _gender = 'Male';
-
-  Future<XFile?> _pickImages() async {
-    ImagePicker picker = ImagePicker();
-    XFile? images = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _profileImage = images!.path;
-    });
-    return images;
-  }
-
-  Future<XFile?> _openCamera() async {
-    ImagePicker picker = ImagePicker();
-    XFile? image = await picker.pickImage(source: ImageSource.camera);
-    setState(() {
-      _profileImage = image!.path;
-    });
-    return image;
-  }
 
   Future<Position?> getUserLocation() async {
     bool serviceEnabled;
@@ -118,21 +100,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
     double height = MediaQuery.sizeOf(context).height;
     double width = MediaQuery.sizeOf(context).width;
     final userProvider = Provider.of<UserProvider>(context, listen: true);
-    if(userProvider.userData != null){
+    if (userProvider.userData != null) {
       final userData = userProvider.userData;
       nameController.text = userData!.name;
       phoneNumberController.text = userData.phone;
       _addressController.text = 'Get your location';
       emailController.text = userData.email;
       _gender = userData.gender;
-      _profileImage = userData.imagePath;
+      _uploadedImageUrl = userData.imagePath;
     }
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Theme.of(context).colorScheme.primary,
-          title: _uiComponents.headline2('Edit Profile',Theme.of(context).colorScheme.tertiary),
+          title: _uiComponents.headline2(
+              'Edit Profile', Theme.of(context).colorScheme.tertiary),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -145,44 +128,72 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 10.verticalSpace,
-                _profileImage == ''
-                    ? Container(
+                if (_profileImage == null && _uploadedImageUrl!.isEmpty)
+                  Container(
+                    height: height * 0.12,
+                    width: width * 0.25,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey.withOpacity(0.35),
+                    ),
+                    child: const Icon(Icons.add_photo_alternate_outlined,size: 35,),
+                  ),
+                if (_profileImage != null)
+                  Center(
+                    child: ClipOval(
+                      // clipBehavior: Clip.antiAliasWithSaveLayer,
+                      child: Container(
                         height: height * 0.12,
                         width: width * 0.25,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.grey.withOpacity(0.35)),
-                        child: const Icon(
-                          Icons.photo_outlined,
-                          size: 30,
-                        ),
-                      )
-                    : Container(
-                        height: height * 0.12,
-                        width: width * 0.25,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: FileImage(
-                              File(_profileImage),
-                            ),
-                            fit: BoxFit.cover,
-                          ),
-                          shape: BoxShape.circle,
-                          color: Colors.grey.withOpacity(0.35),
+                        color: Colors.blueGrey,
+                        child: Image.file(
+                          File(_profileImage!.path),
+                          fit: BoxFit.cover,
                         ),
                       ),
+                    ),
+                  ),
+                if (_uploadedImageUrl!.isNotEmpty)
+                  Center(
+                    child: ClipOval(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      child: Container(
+                        height: height * 0.12,
+                        width: width * 0.25,
+                        color: Colors.blueGrey,
+                        child: Image.network(
+                          _uploadedImageUrl!,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
                 10.verticalSpace,
                 NormalMaterialButton(
                     text: 'Change picture',
                     onPressed: () {
-                      _uiComponents
-                          .mediaBottomSheet(context, height * 0.17, null, () {
-                        _openCamera();
+                      _uiComponents.confirmationDialog(
+                          context,
+                          "Note: You can only change your profile picture 2 times in a month",
+                          "Cancel",
+                          "OK", () {
                         Flexify.back();
                       }, () {
-                        _pickImages();
                         Flexify.back();
-                      }, () {});
+                        _uiComponents
+                            .mediaBottomSheet(context, height * 0.17, null, () async {
+                          _profileImage = await _uploadMedia.openCamera();
+                          setState(() {
+                          });
+                          Flexify.back();
+                        }, () async {
+                          // _pickImages();
+                          _profileImage = await _uploadMedia
+                              .pickFromGallery(isSingleImage: true);
+                          setState(() {});
+                          Flexify.back();
+                        }, () {});
+                      });
                     }),
                 20.verticalSpace,
                 TextFormField(
@@ -345,7 +356,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     name: nameController.text,
                                     phone: phoneNumberController.text,
                                     email: emailController.text,
-                                    imagePath: _profileImage,
+                                    imagePath: _uploadedImageUrl!,
                                     gender: _gender,
                                     address: _addressController.text,
                                     latitude: _contractorPosition!.latitude,

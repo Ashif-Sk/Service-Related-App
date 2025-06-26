@@ -55,20 +55,32 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Theme.of(context).colorScheme.primary,
             ),
             4.verticalSpace,
-            Container(
-              height: height * 0.135,
-              width: width * 0.26,
-              decoration: BoxDecoration(
-                  image:  DecorationImage(
-                      image: user.userData != null ? const NetworkImage(
-                          "https://th.bing.com/th/id/OIP.voWdvTJvgTx7MS9hmo8sQAHaHa?pid=ImgDet&w=202&h=202&c=7&dpr=1.3")
-                          : NetworkImage(
-                          user.userData!.imagePath),
-                      fit: BoxFit.contain),
-                  border: Border.all(color: Colors.grey, width: 2),
-                  shape: BoxShape.circle,
-                  color: Colors.grey),
+            Center(
+              child: ClipOval(
+                child: Container(
+                  height: height * 0.13,
+                  width: width * 0.28,
+                  color: Colors.grey,
+                  child: user.userData != null ? Image.asset("images/profile.png")
+                      : Image.network(
+                      user.userData!.imagePath),
+                ),
+              ),
             ),
+            // Container(
+            //   height: height * 0.135,
+            //   width: width * 0.26,
+            //   decoration: BoxDecoration(
+            //       image:  DecorationImage(
+            //           image: user.userData != null ? const NetworkImage(
+            //               "https://th.bing.com/th/id/OIP.voWdvTJvgTx7MS9hmo8sQAHaHa?pid=ImgDet&w=202&h=202&c=7&dpr=1.3")
+            //               : NetworkImage(
+            //               user.userData!.imagePath),
+            //           fit: BoxFit.contain),
+            //       border: Border.all(color: Colors.grey, width: 2),
+            //       shape: BoxShape.circle,
+            //       color: Colors.grey),
+            // ),
             4.verticalSpace,
             user.userData != null ? _uiComponents.headline2(user.userData!.name,Theme.of(context).colorScheme.secondary):SpinKitCircle(
               size: 30,
@@ -84,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 }),
             10.verticalSpace,
             ReusableListTile(
-                text: 'Favourite',
+                text: 'Wishlist',
                 leadingIcon: Icons.favorite_rounded,
                 onTap: () {
                   Flexify.go(const WishlistPage(),
@@ -94,20 +106,20 @@ class _ProfilePageState extends State<ProfilePage> {
                 trailingIcon: Icons.navigate_next),
             4.verticalSpace,
             ReusableListTile(
-                text: 'Help & Support',
-                leadingIcon: Icons.headset_mic,
+                text: 'Settings',
+                leadingIcon: Icons.settings,
                 onTap: () {
-                  Flexify.go(const HelpSupportPage(),
+                  Flexify.go(const SettingsPage(),
                       animation: FlexifyRouteAnimations.slide,
                       animationDuration: const Duration(milliseconds: 400));
                 },
                 trailingIcon: Icons.navigate_next),
             4.verticalSpace,
             ReusableListTile(
-                text: 'Settings',
-                leadingIcon: Icons.settings,
+                text: 'Help & Support',
+                leadingIcon: Icons.headset_mic,
                 onTap: () {
-                  Flexify.go(const SettingsPage(),
+                  Flexify.go(const HelpSupportPage(),
                       animation: FlexifyRouteAnimations.slide,
                       animationDuration: const Duration(milliseconds: 400));
                 },

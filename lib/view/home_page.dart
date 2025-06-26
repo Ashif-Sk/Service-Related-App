@@ -1,6 +1,8 @@
 import 'package:contrador/components/ui_components.dart';
+import 'package:contrador/services/notification_services.dart';
 import 'package:contrador/view/details/category_page.dart';
 import 'package:contrador/view/search_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +16,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final UiComponents _uiComponents = UiComponents();
+
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   final userId = FirebaseAuth.instance.currentUser!.uid;
+  //   NotificationServices.saveTokenToFirestore(userId);
+  // }
 
   @override
   Widget build(BuildContext context) {

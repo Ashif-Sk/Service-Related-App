@@ -148,7 +148,7 @@ class _ContractorProfilePageState extends State<ContractorProfilePage>
                         constraints: BoxConstraints(maxHeight: height * 0.55),
                         isScrollControlled: true,
                         backgroundColor:
-                            Theme.of(context).colorScheme.primaryContainer,
+                            Theme.of(context).colorScheme.tertiary,
                         useSafeArea: true,
                         showDragHandle: true,
                         shape: const RoundedRectangleBorder(
@@ -174,17 +174,17 @@ class _ContractorProfilePageState extends State<ContractorProfilePage>
               children: [
                 ReusableDetailsRow(
                     uiComponents: _uiComponents,
-                    title: 'Service Id',
-                    subTitle: widget.contractor!.serviceId),
-                ReusableDetailsRow(
-                    uiComponents: _uiComponents,
                     title: 'Experience',
-                    subTitle: widget.contractor!.experience),
+                    subTitle: "${widget.contractor!.experience} yr"),
                 ReusableDetailsRow(
                   title: 'Followers',
                   subTitle: '20',
                   uiComponents: _uiComponents,
                 ),
+                ReusableDetailsRow(
+                    uiComponents: _uiComponents,
+                    title: 'Address',
+                    subTitle: widget.contractor!.address),
               ],
             ),
           ),

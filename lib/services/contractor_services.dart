@@ -38,8 +38,7 @@ class ContractorServices {
     return null;
   }
 
-  Future<List<ContractorModel>?> getAllServicesByContractorId(
-      String contractorId) async {
+  Future<List<ContractorModel>?> getAllServicesByContractorId(String contractorId) async {
     try {
       CollectionReference service = _firestore
           .collection('contractors')
@@ -57,4 +56,25 @@ class ContractorServices {
     }
     return null;
   }
+
+  Future<bool?> deleteService(String contractorId, String serviceId) async {
+    try {
+      final services = _firestore
+          .collection('contractors')
+          .doc(contractorId)
+          .collection('services');
+
+      final snapshot = await services.where("serviceId", isEqualTo: serviceId).get();
+
+      for (var doc in snapshot.docs) {
+        await services.doc(doc.id).delete();
+        print("Deleted: ${doc.id}");
+        return true;
+      }
+    } catch (e) {
+      print("Error in deleting service: ${e.toString()}");
+    }
+    return null;
+  }
+
 }

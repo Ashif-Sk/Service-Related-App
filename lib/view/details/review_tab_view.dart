@@ -37,7 +37,7 @@ class _ReviewTabViewState extends State<ReviewTabView> {
 
   Future<void> loadRatingData(String contractorId) async {
     Map<String, dynamic>? ratingData = await _reviewServices.getRatingData(contractorId);
-
+    print(ratingData);
     if (ratingData != null) {
       setState(() {
         _rating = ratingData['rating'] ?? 0.0;
@@ -47,6 +47,7 @@ class _ReviewTabViewState extends State<ReviewTabView> {
       setState(() {
         _isHasData = false;
       });
+      print(_isHasData);
     }
   }
 

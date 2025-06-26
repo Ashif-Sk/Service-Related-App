@@ -3,6 +3,7 @@ import 'package:contrador/provider/favourite_provider.dart';
 import 'package:contrador/provider/user_provider.dart';
 import 'package:contrador/view/splash_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flexify/flexify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,7 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.onBackgroundMessage(onMessagingBackgroundHandler);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(
@@ -23,6 +25,11 @@ Future<void> main() async {
       child: const MyApp(),
     ),
   );
+
+}
+
+Future<void> onMessagingBackgroundHandler(RemoteMessage message) async{
+  await Firebase.initializeApp();
 }
 
 class MyApp extends StatelessWidget {
@@ -40,6 +47,9 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Contrador',
             theme: ThemeData(
+              appBarTheme: const AppBarTheme(
+                iconTheme: IconThemeData(color: Colors.white),
+              ),
                 colorScheme: ColorScheme.light(
               brightness: Brightness.light,
               surface: Colors.white,

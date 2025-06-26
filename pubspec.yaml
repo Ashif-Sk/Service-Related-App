@@ -53,10 +53,19 @@ dependencies:
   geocoding: ^3.0.0
   google_maps_flutter: ^2.10.0
   image_picker: ^1.1.2
-
+  http:
+  flutter_image_compress: ^2.4.0
+  path_provider: ^2.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "images/launcher-icon.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

@@ -65,7 +65,7 @@ class ReviewServices {
 
   Future<Map<String, dynamic>?> getRatingData(String contractorId) async {
     DocumentSnapshot snapshot =
-    await FirebaseFirestore.instance.collection('contractor').doc(contractorId).get();
+    await FirebaseFirestore.instance.collection('contractors').doc(contractorId).get();
 
     if (snapshot.exists) {
       Map<String, dynamic>? ratingData = snapshot.data() as Map<String, dynamic>?;

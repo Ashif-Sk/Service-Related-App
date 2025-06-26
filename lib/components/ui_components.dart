@@ -154,7 +154,7 @@ class UiComponents {
         return showModalBottomSheet(
         showDragHandle: true,
         backgroundColor:
-        Theme.of(context).colorScheme.primaryContainer,
+        Theme.of(context).colorScheme.tertiary,
         constraints: BoxConstraints(maxHeight: height),
         useSafeArea: true,
         shape: const RoundedRectangleBorder(
@@ -280,8 +280,6 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // double height = MediaQuery.of(context).size.height;
-    // double width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: onPressed,
       child: SizedBox(
